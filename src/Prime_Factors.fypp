@@ -1,0 +1,62 @@
+#:set ikinds   = ['C_INT']
+#:set lkinds   = ['C_BOOL']
+#:set lst      = list(zip(ikinds, lkinds))
+module Prime_Factors
+
+  use FC_Kinds
+  use, intrinsic :: ISO_C_Binding
+
+  implicit none
+
+  private
+
+  public :: is_prime
+  public :: get_factor_power
+
+contains
+#: for ik, lk in lst
+
+  function is_prime(number) result(u) BIND(C, NAME="is_prime")
+
+    integer(${ik}$), intent(in), value :: number
+
+    logical(${lk}$) :: u
+
+    integer(${ik}$) :: div_count
+    integer(${ik}$) :: i
+
+    u = .false._${lk}$
+    div_count = 0_${ik}$
+
+    if (number < 1_${ik}$) return
+
+    do i = 1_${ik}$, number
+      if(modulo(number, i)==0_${ik}$) div_count = div_count + 1_${ik}$
+    enddo
+
+    if (div_count <= 2_${ik}$) u = .true._${lk}$
+
+  end function is_prime
+
+  function get_factor_power(number, prime_factor) result(u) &
+    BIND(C, NAME="get_factor_power")
+
+    integer(${ik}$), intent(in), value :: number
+    integer(${ik}$), intent(in), value :: prime_factor
+
+    integer(${ik}$) :: u
+
+    integer(${ik}$) :: aux
+
+    u = 0_${ik}$
+    aux = number
+
+    do while (modulo(aux, prime_factor) == 0_${ik}$)
+      aux = aux / prime_factor
+      u = u + 1_${ik}$
+    enddo
+
+  end function get_factor_power
+#: endfor
+
+end module Prime_Factors

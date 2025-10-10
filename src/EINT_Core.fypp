@@ -1,0 +1,111 @@
+#:set ikinds   = ['C_INT', 'C_INT']
+#:set rkinds   = ['C_FLOAT', 'C_DOUBLE']
+#:set list     = list(zip(ikinds, rkinds))
+module EINT_Core
+
+  use FC_Kinds
+  use Prime_Factors
+
+  implicit none
+
+  private
+
+#:for ik, rk in list
+  public :: extrapolation_driver${rk}$
+#:endfor
+
+contains
+#:for ik, rk in list
+
+  function extrapolation_driver${rk}$(array, base) result(u)
+
+    real(${rk}$),    intent(in)           :: array(:)
+    integer(${ik}$), intent(in), optional :: base
+
+    real(${rk}$) :: u
+
+    integer(${ik}$) :: lbase
+    integer(${ik}$) :: power
+    integer(${ik}$) :: N
+
+    lbase = 2_${ik}$
+    power = 0_${ik}$
+    N = size(array, kind = ${ik}$)
+
+    if (N < 2_${ik}$) then
+      u = array(1_${ik}$)
+      return
+    endif
+
+    if (present(base)) then
+      if (is_prime(base)) lbase = base
+    endif
+
+    power = get_factor_power(N - 1_${ik}$, lbase)
+
+    u = apply_extrapolation_scheme${rk}$(array, lbase, power)
+
+  end function extrapolation_driver${rk}$
+
+  function apply_extrapolation_scheme${rk}$(array, base, power) result(u)
+
+    real(${rk}$),    intent(in) :: array(:)
+    integer(${ik}$), intent(in) :: base
+    integer(${ik}$), intent(in) :: power
+
+    real(${rk}$) :: u
+
+    real(${rk}$)    :: work(power + 1_${ik}$)
+    integer(${ik}$) :: i, j
+
+    do i = 1_${ik}$, power + 1_${ik}$
+      work(power + 2_${ik}$ - i) = &
+      trapezoidal_rule${rk}$(array, base, i-1_${ik}$)
+    enddo
+
+    do i = 2_${ik}$, (power + 1_${ik}$)
+      do j = 1_${ik}$, (power + 1_${ik}$) - i + 1_${ik}$
+        work(j) = &
+        ((real(base, ${rk}$)**2_${ik}$)**(i - 1_${ik}$))*work(j + 1_${ik}$) &
+         - work(j)
+        work(j) = &
+        work(j)/(-1.0_${rk}$ + &
+        (real(base, ${rk}$)**2_${ik}$)**(i - 1_${ik}$))
+      enddo
+    enddo
+
+    u = work(1)
+
+  end function apply_extrapolation_scheme${rk}$
+
+  function trapezoidal_rule${rk}$(array, base, power) result(u)
+
+    real(${rk}$),    intent(in) :: array(:)
+    integer(${ik}$), intent(in) :: base
+    integer(${ik}$), intent(in) :: power
+
+    real(${rk}$) :: u
+
+    integer(${ik}$) :: N, Np
+    integer(${ik}$) :: i
+
+    N = size(array, kind=${ik}$)
+    Np = ((N-1_${ik}$)/base**power) + 1_${ik}$
+
+    u = 0.5_${rk}$*(array(1_${ik}$) + array(N))
+
+    !SIMD????
+    !$OMP PARALLEL PRIVATE(i) SHARED(Np, base, power, array)
+    !$OMP DO REDUCTION(+: u)
+    do i = 2_${ik}$, Np-1_${ik}$
+      u = u + array((base**power)*(i-1_${ik}$) + 1_${ik}$)
+    enddo
+    !$OMP END DO
+    !$OMP END PARALLEL
+
+    u = u/real(Np-1_${ik}$, ${rk}$)
+
+  end function trapezoidal_rule${rk}$
+#: endfor
+
+end module EINT_Core
