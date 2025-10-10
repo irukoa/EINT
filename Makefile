@@ -65,6 +65,13 @@ DBGCDEPS := $(filter %.cd, $(patsubst $(DBGOBJ)/%.co,$(DBGOBJ)/%.cd,$(DBGOBJS)))
 DBGFDEPS := $(filter %.fd, $(patsubst $(DBGOBJ)/%.fo,$(DBGOBJ)/%.fd,$(DBGOBJS)))
 DBGDEPS  := $(DBGCDEPS) $(DBGFDEPS)
 
+#Test profile.
+TESTDIR  := test
+TESTEXE  := $(TESTDIR)/Run_Tests.o
+TESTSRC  := $(TESTDIR)/suites
+TESTSRCS := $(wildcard $(TESTSRC)/*.c)
+TESTOBJS := $(filter-out $(DBGOBJ)/main.co,$(DBGOBJS))
+
 #Targets.
 
 .PHONY: release debug test runtest install clean
@@ -116,5 +123,21 @@ clean:
 		$(RM) $(OBJ) $(BIN) $(DBGBIN) $(DBGOBJ)
 		$(RM) $(TESTDIR)/*.gcda
 		$(RM) $(TESTDIR)/*.gcno
+		$(RM) $(TESTDIR)/*.d
 		$(RM) $(TESTDIR)/coverage.info
 		$(RM) $(TESTDIR)/report
+
+test: clean $(TESTEXE) runtest
+
+$(TESTEXE): $(TESTOBJS) $(TESTSRCS) $(TESTDIR)/Driver.c | $(DBGBIN)
+		$(FC) $(FFLAGS) $(CFLAGS) $(DBGFLAGS) -I$(INCLUDE) -I$(TESTSRC) $(DEFINITIOS) $(LDFLAGS) $(LDLIBS) $(TESTOBJS) $(TESTDIR)/Driver.c -o $@
+		$(RM) *.mod
+
+runtest: $(TESTEXE)
+		./$(TESTEXE) 1> /dev/null
+		$(CP) $(DBGOBJ)/*.gcda $(TESTDIR)
+		$(CP) $(DBGOBJ)/*.gcno $(TESTDIR)
+		lcov --capture --directory $(TESTDIR) --output-file=$(TESTDIR)/coverage.info > /dev/null 2>&1
+		genhtml $(TESTDIR)/coverage.info --output-directory=$(TESTDIR)/report > /dev/null 2>&1
+
+install:
