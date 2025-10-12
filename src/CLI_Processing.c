@@ -56,7 +56,12 @@ void print_version(char *argv[]) {
   fprintf(stdout, "%s version %s %s (EINT)\n", argv[0], VERSION, DATE);
 }
 
-void check_command_line_input(int           argc,
+#ifdef DBG_PRF
+int
+#else
+void
+#endif
+check_command_line_input(int           argc,
                               char         *argv[],
                               bool         *v_flag,
                               unsigned int *base,
@@ -80,11 +85,20 @@ void check_command_line_input(int           argc,
 
   opterr = 0;
 
+#ifdef DBG_PRF
+  int status;
+#endif
+
   while ((opt = getopt(argc, argv, allowed_flags)) != -1) {
     switch (opt) {
     case 'h':
       print_help(argv, buf_min_colsize, buf_min_rowsize);
+#ifdef DBG_PRF
+      status = EXIT_SUCCESS;
+      return (status);
+#else
       exit(EXIT_SUCCESS);
+#endif
     case 'v':
       *v_flag = true;
       break;
@@ -93,7 +107,12 @@ void check_command_line_input(int           argc,
       tmp               = strtol(optarg, &check, 10);
       if (*check != '\0' || tmp < 1) {
         fprintf(stderr, "-c option requires a positive integer value\n");
+#ifdef DBG_PRF
+        status = EXIT_FAILURE;
+        return (status);
+#else
         exit(EXIT_FAILURE);
+#endif
       }
       *buf_colsize = (size_t)tmp;
       break;
@@ -102,7 +121,12 @@ void check_command_line_input(int           argc,
       tmp               = strtol(optarg, &check, 10);
       if (*check != '\0' || tmp < 1) {
         fprintf(stderr, "-r option requires a positive integer value\n");
+#ifdef DBG_PRF
+        status = EXIT_FAILURE;
+        return (status);
+#else
         exit(EXIT_FAILURE);
+#endif
       }
       *buf_rowsize = (size_t)tmp;
       break;
@@ -111,7 +135,12 @@ void check_command_line_input(int           argc,
       *file      = strdup(optarg);
       if (*file == NULL) {
         fprintf(stderr, "Error obtaining target file : %s\n", strerror(errno));
+#ifdef DBG_PRF
+        status = EXIT_FAILURE;
+        return (status);
+#else
         exit(EXIT_FAILURE);
+#endif
       }
       break;
     case 't':
@@ -121,7 +150,12 @@ void check_command_line_input(int           argc,
       tmp = strtol(optarg, &check, 10);
       if (*check != '\0' || !(is_prime((int)tmp))) {
         fprintf(stderr, "-b option requires a prime number > 1\n");
+#ifdef DBG_PRF
+        status = EXIT_FAILURE;
+        return (status);
+#else
         exit(EXIT_FAILURE);
+#endif
       }
       *base = tmp;
       break;
@@ -131,12 +165,26 @@ void check_command_line_input(int           argc,
               "Usage: %s [-v] [-h] [-b BASE] [-f FILE] [-t] "
               "[-c MAX_BUFFER_COL_SIZE] [-r MAX_BUFFER_ROW_SIZE]\n",
               argv[0]);
+#ifdef DBG_PRF
+      status = EXIT_FAILURE;
+      return (status);
+#else
       exit(EXIT_FAILURE);
+#endif
     }
   }
 
   if (optind != argc) {
     fprintf(stderr, "Too many arguments\n");
+#ifdef DBG_PRF
+    status = EXIT_FAILURE;
+    return (status);
+#else
     exit(EXIT_FAILURE);
+#endif
   }
+#ifdef DBG_PRF
+  status = EXIT_SUCCESS;
+  return (status);
+#endif
 }

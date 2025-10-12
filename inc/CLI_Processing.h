@@ -13,7 +13,12 @@ void print_help(char  *argv[],
 
 void print_version(char *argv[]);
 
-void check_command_line_input(int           argc,
+#ifdef DBG_PRF
+int
+#else
+void
+#endif
+check_command_line_input(int           argc,
                               char         *argv[],
                               bool         *v_flag,
                               unsigned int *base,

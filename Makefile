@@ -7,13 +7,14 @@ CP    := cp
 CC := gcc
 FC := gfortran
 
-CFLAGS   := -MMD -Wall -Wextra -pedantic -std=gnu23
-FFLAGS   := -Wall -Wextra -pedantic -std=f2023
+FLAGS    := -Wall -Wextra -pedantic
+CFLAGS   := -MMD -std=gnu23
+FFLAGS   := -std=f2023
 LIBFLAGS := -fpic -shared
 
 SRC  := src
 SRCS := $(wildcard $(SRC)/*.c)
-#Fortran side sources. We list them in dependency order.
+#We list the Fortran side sources in dependency order.
 SRCS += $(SRC)/FC_Kinds.F90 $(SRC)/Prime_Factors.F90 $(SRC)/EINT_Core.F90 $(SRC)/EINT.F90
 
 INCLUDE := inc
@@ -25,6 +26,7 @@ DEFINITIOS := # -D BUFFER_MIN_COLSIZE=10 -D BUFFER_MIN_ROWSIZE=10
 
 PREFIX := /usr/local
 
+#Required to build Fortran sources.
 .NOTPARALLEL:
 
 #Release profile.
@@ -54,7 +56,7 @@ DBGOBJ := dbgobj
 DBGEXE := $(DBGBIN)/eint
 DBGLIB := $(DBGBIN)/libeint.so
 
-DBGFLAGS := -g -O0 -DDBG_PRF --coverage
+DBGFLAGS := -g -O0 --coverage -DDBG_PRF
 
 DBGCOBJS := $(filter %.co, $(patsubst $(SRC)/%.c,$(DBGOBJ)/%.co,$(SRCS)))
 DBGFOBJS := $(filter %.fo, $(patsubst $(SRC)/%.F90,$(DBGOBJ)/%.fo,$(SRCS)))
@@ -79,40 +81,40 @@ TESTOBJS := $(filter-out $(DBGOBJ)/main.co,$(DBGOBJS))
 release: $(EXE) $(LIB)
 
 $(EXE): $(OBJS) | $(BIN)
-		$(FC) $(FFLAGS) $(CFLAGS) $(RELFLAGS) -I$(INCLUDE) $(DEFINITIOS) $(LDFLAGS) $(LDLIBS) $^ -o $@
+		$(FC) $(FLAGS) $(FFLAGS) $(CFLAGS) $(RELFLAGS) -I$(INCLUDE) $(DEFINITIOS) $(LDFLAGS) $(LDLIBS) $^ -o $@
 		$(RM) *.mod
 
 $(LIB): $(FOBJS) | $(BIN)
-		$(FC) $(LIBFLAGS) $(FFLAGS) $(RELFLAGS) -I$(INCLUDE) $(DEFINITIOS) $(LDFLAGS) $(LDLIBS) $(FOBJS) -o $@
+		$(FC) $(LIBFLAGS) $(FLAGS) $(FFLAGS) $(RELFLAGS) -I$(INCLUDE) $(DEFINITIOS) $(LDFLAGS) $(LDLIBS) $(FOBJS) -o $@
 
 $(OBJ)/%.co: $(SRC)/%.c | $(OBJ)
-		$(CC) $(CFLAGS) $(RELFLAGS) -I$(INCLUDE) $(DEFINITIOS) $(LDFLAGS) $(LDLIBS) -c $^ -o $@
+		$(CC) $(FLAGS) $(CFLAGS) $(RELFLAGS) -I$(INCLUDE) $(DEFINITIOS) $(LDFLAGS) $(LDLIBS) -c $^ -o $@
 
 $(OBJ)/%.fo: $(SRC)/%.F90 | $(FMODS) $(OBJ)
-		$(FC) $(FFLAGS) $(RELFLAGS) -I$(INCLUDE) $(DEFINITIOS) $(LDFLAGS) $(LDLIBS) -c $^ -o $@
+		$(FC) $(FLAGS) $(FFLAGS) $(RELFLAGS) -I$(INCLUDE) $(DEFINITIOS) $(LDFLAGS) $(LDLIBS) -c $^ -o $@
 
 $(OBJ)/%.mod: $(SRC)/%.F90 | $(OBJ)
-		$(FC) $(FFLAGS) $(RELFLAGS) -I$(INCLUDE) $(DEFINITIOS) $(LDFLAGS) $(LDLIBS) -fsyntax-only -J$(OBJ) $^
+		$(FC) $(FLAGS) $(FFLAGS) $(RELFLAGS) -I$(INCLUDE) $(DEFINITIOS) $(LDFLAGS) $(LDLIBS) -fsyntax-only -J$(OBJ) $^
 
 -include $(DEPS)
 
 debug: $(DBGEXE) $(DBGLIB)
 
 $(DBGEXE): $(DBGOBJS) | $(DBGBIN)
-		$(FC) $(FFLAGS) $(CFLAGS) $(DBGFLAGS) -I$(INCLUDE) $(DEFINITIOS) $(LDFLAGS) $(LDLIBS) $^ -o $@
+		$(FC) $(FLAGS) $(FFLAGS) $(CFLAGS) $(DBGFLAGS) -I$(INCLUDE) $(DEFINITIOS) $(LDFLAGS) $(LDLIBS) $^ -o $@
 		$(RM) *.mod
 
 $(DBGLIB): $(DBGFOBJS) | $(DBGBIN)
-		$(FC) $(LIBFLAGS) $(FFLAGS) $(DBGFLAGS) -I$(INCLUDE) $(DEFINITIOS) $(LDFLAGS) $(LDLIBS) $(DBGFOBJS) -o $@
+		$(FC) $(LIBFLAGS) $(FLAGS) $(FFLAGS) $(DBGFLAGS) -I$(INCLUDE) $(DEFINITIOS) $(LDFLAGS) $(LDLIBS) $(DBGFOBJS) -o $@
 
 $(DBGOBJ)/%.co: $(SRC)/%.c | $(DBGOBJ)
-		$(CC) $(CFLAGS) $(DBGFLAGS) -I$(INCLUDE) $(DEFINITIOS) $(LDFLAGS) $(LDLIBS) -c $^ -o $@
+		$(CC) $(FLAGS) $(CFLAGS) $(DBGFLAGS) -I$(INCLUDE) $(DEFINITIOS) $(LDFLAGS) $(LDLIBS) -c $^ -o $@
 
 $(DBGOBJ)/%.fo: $(SRC)/%.F90 | $(DBGFMODS) $(DBGOBJ)
-		$(FC) $(FFLAGS) $(DBGFLAGS) -I$(INCLUDE) $(DEFINITIOS) $(LDFLAGS) $(LDLIBS) -c $^ -o $@
+		$(FC) $(FLAGS) $(FFLAGS) $(DBGFLAGS) -I$(INCLUDE) $(DEFINITIOS) $(LDFLAGS) $(LDLIBS) -c $^ -o $@
 
 $(DBGOBJ)/%.mod: $(SRC)/%.F90 | $(DBGOBJ)
-		$(FC) $(FFLAGS) $(RELFLAGS) -I$(INCLUDE) $(DEFINITIOS) $(LDFLAGS) $(LDLIBS) -fsyntax-only -J$(DBGOBJ) $^
+		$(FC) $(FLAGS) $(FFLAGS) $(DBGFLAGS) -I$(INCLUDE) $(DEFINITIOS) $(LDFLAGS) $(LDLIBS) -fsyntax-only -J$(DBGOBJ) $^
 
 -include $(DBGDEPS)
 
@@ -130,11 +132,14 @@ clean:
 test: clean $(TESTEXE) runtest
 
 $(TESTEXE): $(TESTOBJS) $(TESTSRCS) $(TESTDIR)/Driver.c | $(DBGBIN)
-		$(FC) $(FFLAGS) $(CFLAGS) $(DBGFLAGS) -I$(INCLUDE) -I$(TESTSRC) $(DEFINITIOS) $(LDFLAGS) $(LDLIBS) $(TESTOBJS) $(TESTDIR)/Driver.c -o $@
+		$(FC) $(FLAGS) $(CFLAGS) $(DBGFLAGS) -I$(INCLUDE) -I$(TESTSRC) $(DEFINITIOS) $(LDFLAGS) $(LDLIBS) $(TESTOBJS) $(TESTDIR)/Driver.c -o $@
 		$(RM) *.mod
 
 runtest: $(TESTEXE)
 		./$(TESTEXE) 1> /dev/null
+		$(RM) $(TESTDIR)/*.gcda
+		$(RM) $(TESTDIR)/*.gcno
+		$(RM) *.gcno
 		$(CP) $(DBGOBJ)/*.gcda $(TESTDIR)
 		$(CP) $(DBGOBJ)/*.gcno $(TESTDIR)
 		lcov --capture --directory $(TESTDIR) --output-file=$(TESTDIR)/coverage.info > /dev/null 2>&1

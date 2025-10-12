@@ -33,13 +33,18 @@ int main(int   argc,
 
   bool process_cols = true;
 
-  check_command_line_input(argc, argv, &v_flag, &base, &file_flag, &file,
-                           &process_cols, &cust_buf_colsize, &buf_colsize,
-                           BUFFER_MIN_COLSIZE, &cust_buf_rowsize, &buf_rowsize,
-                           BUFFER_MIN_ROWSIZE);
+#ifdef DBG_PRF
+  int CLIstatus;
+  int CSVstatus;
+#endif
 
-  if (v_flag)
-    print_version(argv);
+#ifdef DBG_PRF
+  CLIstatus =
+#endif
+      check_command_line_input(argc, argv, &v_flag, &base, &file_flag, &file,
+                               &process_cols, &cust_buf_colsize, &buf_colsize,
+                               BUFFER_MIN_COLSIZE, &cust_buf_rowsize,
+                               &buf_rowsize, BUFFER_MIN_ROWSIZE);
 
 #ifdef DBG_PRF
   fprintf(stderr, "========== DEBUG INFO ==========\n");
@@ -59,6 +64,16 @@ int main(int   argc,
   }
   fprintf(stderr, "========== ========== ==========\n");
 #endif
+
+#ifdef DBG_PRF
+  if (CLIstatus == EXIT_FAILURE) {
+    fprintf(stderr, "Error during CLI processing.");
+    exit(EXIT_FAILURE);
+  }
+#endif
+
+  if (v_flag)
+    print_version(argv);
 
   if (BUFFER_MIN_COLSIZE > buf_colsize) {
     fprintf(stderr, "Minimum buffer column size is %li.\n", BUFFER_MIN_COLSIZE);
@@ -93,15 +108,33 @@ int main(int   argc,
       free(file);
       exit(EXIT_FAILURE);
     }
-    read_csv(file_stream, buf_colsize, buf_rowsize, &CSV, &csv_ncols,
-             &csv_nrows);
+#ifdef DBG_PRF
+    CSVstatus =
+#endif
+        read_csv(file_stream, buf_colsize, buf_rowsize, &CSV, &csv_ncols,
+                 &csv_nrows);
+#ifdef DBG_PRF
+    if (CSVstatus == EXIT_FAILURE) {
+      fprintf(stderr, "Error during CSV processing.");
+      exit(EXIT_FAILURE);
+    }
+#endif
     fclose(file_stream);
     free(file);
   } else {
     if (v_flag) {
       fprintf(stdout, "Processing standard input.\n");
     }
-    read_csv(stdin, buf_colsize, buf_rowsize, &CSV, &csv_ncols, &csv_nrows);
+#ifdef DBG_PRF
+    CSVstatus =
+#endif
+        read_csv(stdin, buf_colsize, buf_rowsize, &CSV, &csv_ncols, &csv_nrows);
+#ifdef DBG_PRF
+    if (CSVstatus == EXIT_FAILURE) {
+      fprintf(stderr, "Error during CSV processing.");
+      exit(EXIT_FAILURE);
+    }
+#endif
   }
 
 #ifdef DBG_PRF

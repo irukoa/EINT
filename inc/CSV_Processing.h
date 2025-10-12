@@ -6,7 +6,12 @@
 #include <stdlib.h>
 #include <string.h>
 
-void read_csv(FILE     *stream,
+#ifdef DBG_PRF
+int
+#else
+void
+#endif
+read_csv(FILE     *stream,
               size_t    max_colsize,
               size_t    max_rowsize,
               double ***CSV,
