@@ -3,6 +3,7 @@
 MKDIR := mkdir
 RM    := rm -rf
 CP    := cp
+MV    := mv
 
 CC := gcc
 FC := gfortran
@@ -137,6 +138,7 @@ $(TESTEXE): $(TESTOBJS) $(TESTSRCS) $(TESTDIR)/Driver.c | $(DBGBIN)
 
 runtest: $(TESTEXE)
 		./$(TESTEXE) 1> /dev/null
+		valgrind ./$(TESTEXE) > tmp.log 2>&1
 		$(RM) $(TESTDIR)/*.gcda
 		$(RM) $(TESTDIR)/*.gcno
 		$(RM) *.gcno
@@ -144,5 +146,6 @@ runtest: $(TESTEXE)
 		$(CP) $(DBGOBJ)/*.gcno $(TESTDIR)
 		lcov --capture --directory $(TESTDIR) --output-file=$(TESTDIR)/coverage.info > /dev/null 2>&1
 		genhtml $(TESTDIR)/coverage.info --output-directory=$(TESTDIR)/report > /dev/null 2>&1
+		$(MV) tmp.log $(TESTDIR)/report/valgrind_run.log
 
 install:

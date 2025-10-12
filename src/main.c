@@ -20,15 +20,15 @@ int main(int   argc,
 
   unsigned int base = 2;
 
-  bool v_flag = 0;
+  bool v_flag = false;
 
-  bool   cust_buf_colsize = 0;
+  bool   cust_buf_colsize = false;
   size_t buf_colsize      = 1024;
 
-  bool   cust_buf_rowsize = 0;
+  bool   cust_buf_rowsize = false;
   size_t buf_rowsize      = 1024;
 
-  bool  file_flag = 0;
+  bool  file_flag = false;
   char *file      = NULL;
 
   bool process_cols = true;
