@@ -5,8 +5,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 
 // Include the test suites.
+#include "Functional_Tests.c"
 #include "Test_CLI_Processing.c"
 #include "Test_CSV_Processing.c"
 #include "Test_EINT.c"
@@ -86,6 +88,13 @@ int main() {
       ">>Test 3.10: check EINT: 4th order polynomial (dp) (Extrapolation)\n");
   EINT_Test_check_double_4thOrdPoly_E();
   fprintf(stderr, ">>UNIT TESTS Finished\n");
+  fprintf(stderr, "===============================\n");
+  fprintf(stderr, ">>Starting FUNCTIONAL TESTS\n");
+  fprintf(stderr, ">>Test 1: compute the integral of a stiff function\n");
+  Integrate_Stiff();
+  fprintf(stderr, ">>Test 2: compute the integral of a random polynomial\n");
+  Integrate_Random_Poly();
+  fprintf(stderr, ">>FUNCTIONAL TESTS Finished\n");
   fprintf(stderr, "===============================\n");
   fprintf(stderr, "\n");
   return 0;
