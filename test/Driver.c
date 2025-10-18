@@ -9,12 +9,12 @@
 // Include the test suites.
 #include "Test_CLI_Processing.c"
 #include "Test_CSV_Processing.c"
-#include "user.c"
+#include "Test_EINT.c"
 
 int main() {
   fprintf(stderr, "\n");
   fprintf(stderr, "===============================\n");
-  fprintf(stderr, ">>Starting TESTS\n");
+  fprintf(stderr, ">>Starting UNIT TESTS\n");
   fprintf(stderr, ">>Test suite #1: CLI Processing\n");
   fprintf(stderr, ">>Test 1.1: print help\n");
   CLI_Processing_Test_print_help();
@@ -48,8 +48,44 @@ int main() {
   CSV_Processing_Test_check_irregular_file();
   fprintf(stderr, ">>Test 2.3: check CSV processing: faulty file\n");
   CSV_Processing_Test_check_faulty_conversion();
-  usertest();
-  fprintf(stderr, ">>TESTS Finished\n");
+  fprintf(stderr, ">>Test suite #3: EINT\n");
+  fprintf(stderr, ">>Test 3.1: check EINT: trivial case (sp)\n");
+  EINT_Test_check_float_trivial_case();
+  fprintf(stderr, ">>Test 3.2: check EINT: trivial case (dp)\n");
+  EINT_Test_check_double_trivial_case();
+  fprintf(
+      stderr,
+      ">>Test 3.3: check EINT: 1st order polynomial (sp) (No Extrapolation)\n");
+  EINT_Test_check_float_1stOrdPoly_nE();
+  fprintf(
+      stderr,
+      ">>Test 3.4: check EINT: 1st order polynomial (dp) (No Extrapolation)\n");
+  EINT_Test_check_double_1stOrdPoly_nE();
+  fprintf(
+      stderr,
+      ">>Test 3.5: check EINT: 1st order polynomial (sp) (Extrapolation)\n");
+  EINT_Test_check_float_1stOrdPoly_E();
+  fprintf(
+      stderr,
+      ">>Test 3.6: check EINT: 1st order polynomial (dp) (Extrapolation)\n");
+  EINT_Test_check_double_1stOrdPoly_E();
+  fprintf(
+      stderr,
+      ">>Test 3.7: check EINT: 4th order polynomial (sp) (No Extrapolation)\n");
+  EINT_Test_check_float_4thOrdPoly_nE();
+  fprintf(
+      stderr,
+      ">>Test 3.8: check EINT: 4th order polynomial (dp) (No Extrapolation)\n");
+  EINT_Test_check_double_4thOrdPoly_nE();
+  fprintf(
+      stderr,
+      ">>Test 3.9: check EINT: 4th order polynomial (sp) (Extrapolation)\n");
+  EINT_Test_check_float_4thOrdPoly_E();
+  fprintf(
+      stderr,
+      ">>Test 3.10: check EINT: 4th order polynomial (dp) (Extrapolation)\n");
+  EINT_Test_check_double_4thOrdPoly_E();
+  fprintf(stderr, ">>UNIT TESTS Finished\n");
   fprintf(stderr, "===============================\n");
   fprintf(stderr, "\n");
   return 0;
