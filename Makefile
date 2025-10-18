@@ -127,6 +127,7 @@ clean:
 		$(RM) $(TESTDIR)/*.gcda
 		$(RM) $(TESTDIR)/*.gcno
 		$(RM) $(TESTDIR)/*.d
+		$(RM) $(TESTDIR)/*.o
 		$(RM) $(TESTDIR)/coverage.info
 		$(RM) $(TESTDIR)/report
 
@@ -137,6 +138,7 @@ $(TESTEXE): $(TESTOBJS) $(TESTSRCS) $(TESTDIR)/Driver.c | $(DBGBIN)
 		$(RM) *.mod
 
 runtest: $(TESTEXE)
+		./test/Test_Link_to_Binary.sh
 		./$(TESTEXE) 1> /dev/null
 		valgrind --leak-check=full ./$(TESTEXE) > tmp.log 2>&1
 		$(RM) $(TESTDIR)/*.gcda
