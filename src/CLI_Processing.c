@@ -19,7 +19,7 @@ void print_help(char  *argv[],
   fprintf(stdout, "    -b, BASE               : extrapolation base, a prime "
                   "number > 1. Default is 2.\n");
   fprintf(stdout, "                             Works best with the smallest "
-                  "divisor of the data size.\n");
+                  "divisor of 'data_size-1'.\n");
   fprintf(stdout, "    -f, FILE               : process specified file.\n");
   fprintf(stdout, "    -t,                    : integrate row by row instead "
                   "of column by column.\n");
@@ -81,9 +81,10 @@ check_command_line_input(int           argc,
   extern char *optarg;
   extern int   optind, opterr, optopt;
 
-  static char allowed_flags[] = "v h b: f: t c: r: p:";
+  static char allowed_flags[] = "vhb:f:tc:r:";
 
   opterr = 0;
+  optind = 1;
 
 #ifdef DBG_PRF
   int status;
@@ -135,13 +136,11 @@ check_command_line_input(int           argc,
       *file      = strdup(optarg);
       if (*file == NULL) {
         fprintf(stderr, "Error obtaining target file : %s\n", strerror(errno));
-#ifdef DBG_PRF
-        status = EXIT_FAILURE;
-        return (status);
-#else
         exit(EXIT_FAILURE);
-#endif
       }
+#ifdef DBG_PRF
+      free(*file);
+#endif
       break;
     case 't':
       *process_cols = false;

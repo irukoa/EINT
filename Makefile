@@ -138,7 +138,7 @@ $(TESTEXE): $(TESTOBJS) $(TESTSRCS) $(TESTDIR)/Driver.c | $(DBGBIN)
 
 runtest: $(TESTEXE)
 		./$(TESTEXE) 1> /dev/null
-		valgrind ./$(TESTEXE) > tmp.log 2>&1
+		valgrind --leak-check=full ./$(TESTEXE) > tmp.log 2>&1
 		$(RM) $(TESTDIR)/*.gcda
 		$(RM) $(TESTDIR)/*.gcno
 		$(RM) *.gcno

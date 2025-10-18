@@ -12,22 +12,10 @@ void CLI_Processing_Test_print_version() {
   fprintf(stderr, ">>Test OK\n");
 }
 
-void CLI_Processing_Test_check_command_line_input() {
+void CLI_Processing_Test_check_command_line_input_h() {
 
-  int argc = 2;
-
-  char *argv0 = "Teint";
-  char *argv1 = "-h";
-
-  char **argv = (char **)malloc((argc + 1) * sizeof(char *));
-  assert(argv != NULL);
-  argv[0] = (char *)malloc(strlen(argv0 + 1) * sizeof(char));
-  assert(argv[0] != NULL);
-  strcpy(argv[0], argv0);
-  argv[1] = (char *)malloc(strlen(argv1 + 1) * sizeof(char));
-  assert(argv[1] != NULL);
-  strcpy(argv[1], argv1);
-  argv[argc] = NULL;
+  char *args[] = {"Teint", "-h", NULL};
+  int   argc   = 2;
 
   size_t buf_min_colsize = 10;
   size_t buf_min_rowsize = 10;
@@ -43,15 +31,226 @@ void CLI_Processing_Test_check_command_line_input() {
   size_t       buf_rowsize;
 
   int status = check_command_line_input(
-      argc, argv, &v_flag, &base, &file_flag, &file, &process_cols,
+      argc, args, &v_flag, &base, &file_flag, &file, &process_cols,
       &cust_buf_colsize, &buf_colsize, buf_min_colsize, &cust_buf_rowsize,
       &buf_rowsize, buf_min_rowsize);
 
-  free(argv[0]);
-  free(argv[1]);
-  free(argv[argc]);
-  free(argv);
+  assert(status == EXIT_SUCCESS);
+  fprintf(stderr, ">>Test OK\n");
+}
+
+void CLI_Processing_Test_check_command_line_input_cvalid() {
+
+  char *args[] = {"Teint", "-c11", NULL};
+  int   argc   = 2;
+
+  size_t buf_min_colsize = 10;
+  size_t buf_min_rowsize = 10;
+
+  bool         v_flag;
+  unsigned int base;
+  bool         file_flag;
+  char        *file;
+  bool         process_cols;
+  bool         cust_buf_colsize;
+  size_t       buf_colsize;
+  bool         cust_buf_rowsize;
+  size_t       buf_rowsize;
+
+  int status = check_command_line_input(
+      argc, args, &v_flag, &base, &file_flag, &file, &process_cols,
+      &cust_buf_colsize, &buf_colsize, buf_min_colsize, &cust_buf_rowsize,
+      &buf_rowsize, buf_min_rowsize);
 
   assert(status == EXIT_SUCCESS);
+  fprintf(stderr, ">>Test OK\n");
+}
+
+void CLI_Processing_Test_check_command_line_input_cinvalid() {
+
+  char *args[] = {"Teint", "-c -219348239", NULL};
+  int   argc   = 2;
+
+  size_t buf_min_colsize = 10;
+  size_t buf_min_rowsize = 10;
+
+  bool         v_flag;
+  unsigned int base;
+  bool         file_flag;
+  char        *file;
+  bool         process_cols;
+  bool         cust_buf_colsize;
+  size_t       buf_colsize;
+  bool         cust_buf_rowsize;
+  size_t       buf_rowsize;
+
+  int status = check_command_line_input(
+      argc, args, &v_flag, &base, &file_flag, &file, &process_cols,
+      &cust_buf_colsize, &buf_colsize, buf_min_colsize, &cust_buf_rowsize,
+      &buf_rowsize, buf_min_rowsize);
+
+  assert(status == EXIT_FAILURE);
+  fprintf(stderr, ">>Test OK\n");
+}
+
+void CLI_Processing_Test_check_command_line_input_rvalid() {
+
+  char *args[] = {"Teint", "-r11", NULL};
+  int   argc   = 2;
+
+  size_t buf_min_colsize = 10;
+  size_t buf_min_rowsize = 10;
+
+  bool         v_flag;
+  unsigned int base;
+  bool         file_flag;
+  char        *file;
+  bool         process_cols;
+  bool         cust_buf_colsize;
+  size_t       buf_colsize;
+  bool         cust_buf_rowsize;
+  size_t       buf_rowsize;
+
+  int status = check_command_line_input(
+      argc, args, &v_flag, &base, &file_flag, &file, &process_cols,
+      &cust_buf_colsize, &buf_colsize, buf_min_colsize, &cust_buf_rowsize,
+      &buf_rowsize, buf_min_rowsize);
+
+  assert(status == EXIT_SUCCESS);
+  fprintf(stderr, ">>Test OK\n");
+}
+
+void CLI_Processing_Test_check_command_line_input_rinvalid() {
+
+  char *args[] = {"Teint", "-r -34857", NULL};
+  int   argc   = 2;
+
+  size_t buf_min_colsize = 10;
+  size_t buf_min_rowsize = 10;
+
+  bool         v_flag;
+  unsigned int base;
+  bool         file_flag;
+  char        *file;
+  bool         process_cols;
+  bool         cust_buf_colsize;
+  size_t       buf_colsize;
+  bool         cust_buf_rowsize;
+  size_t       buf_rowsize;
+
+  int status = check_command_line_input(
+      argc, args, &v_flag, &base, &file_flag, &file, &process_cols,
+      &cust_buf_colsize, &buf_colsize, buf_min_colsize, &cust_buf_rowsize,
+      &buf_rowsize, buf_min_rowsize);
+
+  assert(status == EXIT_FAILURE);
+  fprintf(stderr, ">>Test OK\n");
+}
+
+void CLI_Processing_Test_check_command_line_input_bvalid() {
+
+  char *args[] = {"Teint", "-b11", NULL};
+  int   argc   = 2;
+
+  size_t buf_min_colsize = 10;
+  size_t buf_min_rowsize = 10;
+
+  bool         v_flag;
+  unsigned int base;
+  bool         file_flag;
+  char        *file;
+  bool         process_cols;
+  bool         cust_buf_colsize;
+  size_t       buf_colsize;
+  bool         cust_buf_rowsize;
+  size_t       buf_rowsize;
+
+  int status = check_command_line_input(
+      argc, args, &v_flag, &base, &file_flag, &file, &process_cols,
+      &cust_buf_colsize, &buf_colsize, buf_min_colsize, &cust_buf_rowsize,
+      &buf_rowsize, buf_min_rowsize);
+
+  assert(status == EXIT_SUCCESS);
+  fprintf(stderr, ">>Test OK\n");
+}
+
+void CLI_Processing_Test_check_command_line_input_binvalid() {
+
+  char *args[] = {"Teint", "-b9", NULL};
+  int   argc   = 2;
+
+  size_t buf_min_colsize = 10;
+  size_t buf_min_rowsize = 10;
+
+  bool         v_flag;
+  unsigned int base;
+  bool         file_flag;
+  char        *file;
+  bool         process_cols;
+  bool         cust_buf_colsize;
+  size_t       buf_colsize;
+  bool         cust_buf_rowsize;
+  size_t       buf_rowsize;
+
+  int status = check_command_line_input(
+      argc, args, &v_flag, &base, &file_flag, &file, &process_cols,
+      &cust_buf_colsize, &buf_colsize, buf_min_colsize, &cust_buf_rowsize,
+      &buf_rowsize, buf_min_rowsize);
+
+  assert(status == EXIT_FAILURE);
+  fprintf(stderr, ">>Test OK\n");
+}
+
+void CLI_Processing_Test_check_command_line_input_fvalid() {
+
+  char *args[] = {"Teint", "-f a.dat", NULL};
+  int   argc   = 2;
+
+  size_t buf_min_colsize = 10;
+  size_t buf_min_rowsize = 10;
+
+  bool         v_flag;
+  unsigned int base;
+  bool         file_flag;
+  char        *file;
+  bool         process_cols;
+  bool         cust_buf_colsize;
+  size_t       buf_colsize;
+  bool         cust_buf_rowsize;
+  size_t       buf_rowsize;
+
+  int status = check_command_line_input(
+      argc, args, &v_flag, &base, &file_flag, &file, &process_cols,
+      &cust_buf_colsize, &buf_colsize, buf_min_colsize, &cust_buf_rowsize,
+      &buf_rowsize, buf_min_rowsize);
+
+  assert(status == EXIT_SUCCESS);
+  fprintf(stderr, ">>Test OK\n");
+}
+
+void CLI_Processing_Test_check_command_line_input_invalid_flag() {
+
+  char *args[] = {"Teint", "-d", NULL};
+  int   argc   = 2;
+
+  size_t buf_min_colsize = 10;
+  size_t buf_min_rowsize = 10;
+
+  bool         v_flag;
+  unsigned int base;
+  bool         file_flag;
+  char        *file;
+  bool         process_cols;
+  bool         cust_buf_colsize;
+  size_t       buf_colsize;
+  bool         cust_buf_rowsize;
+  size_t       buf_rowsize;
+
+  int status = check_command_line_input(
+      argc, args, &v_flag, &base, &file_flag, &file, &process_cols,
+      &cust_buf_colsize, &buf_colsize, buf_min_colsize, &cust_buf_rowsize,
+      &buf_rowsize, buf_min_rowsize);
+
+  assert(status == EXIT_FAILURE);
   fprintf(stderr, ">>Test OK\n");
 }
