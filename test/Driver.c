@@ -1,11 +1,14 @@
 // Common headers.
 #include <assert.h>
+#include <float.h>
+#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
 // Include the test suites.
 #include "Test_CLI_Processing.c"
+#include "Test_CSV_Processing.c"
 #include "user.c"
 
 int main() {
@@ -38,6 +41,13 @@ int main() {
   CLI_Processing_Test_check_command_line_input_fvalid();
   fprintf(stderr, ">>Test 1.10: check CLI processing: invalid flag\n");
   CLI_Processing_Test_check_command_line_input_invalid_flag();
+  fprintf(stderr, ">>Test suite #2: CSV Processing\n");
+  fprintf(stderr, ">>Test 2.1: check CSV processing: valid file\n");
+  CSV_Processing_Test_check_valid_file();
+  fprintf(stderr, ">>Test 2.2: check CSV processing: irregular file\n");
+  CSV_Processing_Test_check_irregular_file();
+  fprintf(stderr, ">>Test 2.3: check CSV processing: faulty file\n");
+  CSV_Processing_Test_check_faulty_conversion();
   usertest();
   fprintf(stderr, ">>TESTS Finished\n");
   fprintf(stderr, "===============================\n");

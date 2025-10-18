@@ -45,7 +45,7 @@ read_csv(FILE     *stream,
     counter++;
   }
 
-  if (!feof(stdin)) {
+  if (!feof(stream)) {
     fprintf(stderr, "Error reading data : could not read whole CSV file.\n");
 #ifdef DBG_PRF
     status = EXIT_FAILURE;
@@ -73,24 +73,14 @@ read_end:
   if (*CSV == NULL) {
     fprintf(stderr, "Error allocating CSV : nrows: %li : %s\n", *nrows,
             strerror(errno));
-#ifdef DBG_PRF
-    status = EXIT_FAILURE;
-    return (status);
-#else
     exit(EXIT_FAILURE);
-#endif
   }
   for (size_t i = 0; i < *nrows; i++) {
     (*CSV)[i] = (double *)malloc((*ncols) * sizeof(double));
     if ((*CSV)[i] == NULL) {
       fprintf(stderr, "Error allocating CSV : ncols: %li : %s\n", *ncols,
               strerror(errno));
-#ifdef DBG_PRF
-      status = EXIT_FAILURE;
-      return (status);
-#else
       exit(EXIT_FAILURE);
-#endif
     }
   }
 
