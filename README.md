@@ -1,3 +1,4 @@
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.17390545.svg)](https://doi.org/10.5281/zenodo.17390545)
 # EINT
 
 Numerically integrate data employing the extrapolation method.
@@ -68,11 +69,19 @@ echo "0.0 0.25 0.5 0.75 1.0" | eint -t
 - ``make``,
 - ``gcc``,
 - ``gfortran``,
+- ``clang``,
+- ``clang-format`` (>= ``v20.1``),
 - ``fypp``,
+- ``pre-commit``,
 - ``valgrind``,
 - ``gcov``,
 - ``lcov``, and
 - ``genhtml``.
+
+Install ``pre-commit``:
+```
+pre-commit install
+```
 
 Updating the source code:
 ```
