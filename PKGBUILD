@@ -1,6 +1,6 @@
 # Maintainer: Alvaro R. Puente-Uriona <irukoa@live.com>
 pkgname=eint
-pkgfname=EINT
+_pkgfname=EINT
 pkgver=v0.0.1
 pkgrel=1
 pkgdesc="Numerically integrate data employing the extrapolation method."
@@ -12,12 +12,12 @@ source=("git+${url}")
 md5sums=('SKIP')
 
 build() {
-	cd "$pkgfname"
+	cd "$_pkgfname"
 	make release
 }
 
 package() {
-	cd "$pkgfname"
+	cd "$_pkgfname"
 	make install DESTDIR="$pkgdir" PREFIX="/usr" MNPATH="/usr/local/man"
 	install -Dm 644 ./README.md "$pkgdir/usr/share/doc/$pkgname/README.md"
 }
