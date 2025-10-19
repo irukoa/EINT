@@ -164,12 +164,12 @@ install: release
 		install -d $(DESTDIR)$(PREFIX)/include/
 		install -m 644 $(HED) $(DESTDIR)$(PREFIX)/include/
 		gzip < ManPage > eint.1.gz
-		install -d $(MNPATH)/man1
-		install -m 644 eint.1.gz $(MNPATH)/man1
+		install -d $(DESTDIR)$(MNPATH)/man1
+		install -m 644 eint.1.gz $(DESTDIR)$(MNPATH)/man1
 		$(RM) eint.1.gz
 
 uninstall:
 		$(RM) $(DESTDIR)$(PREFIX)/bin/eint
 		$(RM) $(DESTDIR)$(PREFIX)/lib/libeint.so
 		$(RM) $(DESTDIR)$(PREFIX)/include/EINT.h
-		$(RM) $(MNPATH)/man1/eint.1.gz
+		$(RM) $(DESTDIR)$(MNPATH)/man1/eint.1.gz
