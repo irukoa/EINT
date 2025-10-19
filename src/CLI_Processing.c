@@ -19,13 +19,13 @@ void print_help(char  *argv[],
   fprintf(stdout, "    -b, BASE               : extrapolation base, a prime "
                   "number > 1. Default is 2.\n");
   fprintf(stdout, "                             Works best with the smallest "
-                  "divisor of 'data_size-1'.\n");
+                  "or most degenerate divisor of 'data_size-1'.\n");
   fprintf(stdout, "    -f, FILE               : process specified file.\n");
   fprintf(stdout, "    -t,                    : integrate row by row instead "
                   "of column by column.\n");
   fprintf(
       stdout,
-      "    The next arguments are usefull for processing large CSV files.\n");
+      "    The next arguments are useful for processing large CSV files.\n");
   fprintf(stdout,
           "    -c, MAX_BUFFER_COL_SIZE: a custom maximum column size for "
           "reading CSV files. Must be > %li.\n",
@@ -48,8 +48,7 @@ void print_help(char  *argv[],
   fprintf(stdout,
           "For manual input, press ENTER with no data to end the stream.\n");
   fprintf(stdout, "\n");
-  fprintf(stdout, "Report bugs to: <%s>\n", EMAIL);
-  fprintf(stdout, "Full documentation <%s>\n", REPO);
+  fprintf(stdout, "Full documentation: <%s>\n", REPO);
 }
 
 void print_version(char *argv[]) {

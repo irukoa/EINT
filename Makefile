@@ -1,9 +1,13 @@
 #Header.
 
-MKDIR := mkdir
+MKDIR := mkdir -p
 RM    := rm -rf
 CP    := cp
 MV    := mv
+
+DESTDIR :=
+PREFIX  := /usr/local
+MNPATH  := /usr/local/man
 
 CC := gcc
 FC := gfortran
@@ -25,8 +29,6 @@ LDLIBS  :=
 
 DEFINITIOS := # -D BUFFER_MIN_COLSIZE=10 -D BUFFER_MIN_ROWSIZE=10
 
-PREFIX := /usr/local
-
 #Required to build Fortran sources.
 .NOTPARALLEL:
 
@@ -37,6 +39,7 @@ OBJ := obj
 
 EXE := $(BIN)/eint
 LIB := $(BIN)/libeint.so
+HED := $(INCLUDE)/EINT.h
 
 RELFLAGS := -Werror -O3 -DNDEBUG
 
@@ -77,7 +80,7 @@ TESTOBJS := $(filter-out $(DBGOBJ)/main.co,$(DBGOBJS))
 
 #Targets.
 
-.PHONY: release debug test runtest install clean
+.PHONY: release debug test runtest install uninstall clean
 
 release: $(EXE) $(LIB)
 
@@ -150,4 +153,20 @@ runtest: $(TESTEXE)
 		genhtml $(TESTDIR)/coverage.info --output-directory=$(TESTDIR)/report > /dev/null 2>&1
 		$(MV) tmp.log $(TESTDIR)/report/valgrind_run.log
 
-install:
+install: release
+		install -d $(DESTDIR)$(PREFIX)/bin/
+		install -m 755 $(EXE) $(DESTDIR)$(PREFIX)/bin/
+		install -d $(DESTDIR)$(PREFIX)/lib/
+		install -m 644 $(LIB) $(DESTDIR)$(PREFIX)/lib/
+		install -d $(DESTDIR)$(PREFIX)/include/
+		install -m 644 $(HED) $(DESTDIR)$(PREFIX)/include/
+		gzip < ManPage > eint.1.gz
+		install -d $(MNPATH)/man1
+		install -m 644 eint.1.gz $(MNPATH)/man1
+		$(RM) eint.1.gz
+
+uninstall:
+		$(RM) $(DESTDIR)$(PREFIX)/bin/eint
+		$(RM) $(DESTDIR)$(PREFIX)/lib/libeint.so
+		$(RM) $(DESTDIR)$(PREFIX)/include/EINT.h
+		$(RM) $(MNPATH)/man1/eint.1.gz

@@ -1,0 +1,78 @@
+.TH EINT 1
+
+.SH NAME
+
+eint - Numerically integrate data employing the extrapolation method.
+
+.SH SYNOPSIS
+
+eint [OPTION(S)]
+
+.SH DESCRIPTION
+
+Numerically integrate data employing the extrapolation (a.k.a. Romberg integration) method.
+
+EINT computes integrals of the form I = \\frac{1}{b-a}\\int_{a}^{b}f(x)dx, using the extrapolation (a.k.a. Romberg integration) method. We assume that the [a, b] interval is discretised as x_i = a + (b-a)\\frac{i-1}{N-1} = a + (i-1)h : i\\in[1, N], and that the array of values {f(x_i): i\\in[1, N]} is known. We call N the number of discretisation points, and h the "step size".
+
+The accuracy of the method depends on N. Given a prime factorisation of N-1, N-1 = 2^{n_2}3^{n_3}\\cdots, the extrapolation method can be applied with an arbitrary prime base p. If p^{n_p} is a factor of N-1, then the expected accuracy of the result will be \\mathcal{O}(h^{2n_p}).
+
+The program processes space- or comma-separated CSV files.
+
+The program considers each column j of the CSV file as a discretisation of the function f_j(x). If the option -t is specified, the program will consider each row i of the CSV file as a discretisation of the function f_i(x) instead.
+
+.SH OPTIONS
+
+Usage: eint [-v] [-h] [-b BASE] [-f FILE] [-t] [-c MAX_BUFFER_COL_SIZE] [-r MAX_BUFFER_ROW_SIZE]
+
+-v,                    : print version and verbose option.
+
+-h,                    : print help and exit.
+
+-b, BASE               : extrapolation base, a prime number > 1. Default is 2.
+                         Works best with the smallest or most degenerate divisor of N-1.
+
+-f, FILE               : process specified file.
+
+-t,                    : integrate row by row instead of column by column.
+
+The next arguments are useful for processing large CSV files.
+
+-c, MAX_BUFFER_COL_SIZE: a custom maximum column size for reading CSV files. Must be > 1024.
+
+-r, MAX_BUFFER_ROW_SIZE: a custom maximum row size for reading CSV files. Must be > 1024.
+
+.SH EXAMPLE
+
+Integrate f(x) = x from 0 to 1, using N = 5 = 2^2 - 1.
+
+>$ echo "0.0 0.25 0.5 0.75 1.0" | eint -t
+
+5.0000000000e-01
+
+.SH LIBRARY API
+
+Header: EINT.h,
+
+Library: libeint.so,
+
+Link options: -leint.
+
+(float/double) *array : Pointer to the array containing the discretisation of f(x).
+
+size_t sz : Size of the array, that is N.
+
+int base : Prime factor p of (N-1).
+
+(float/double) extrapolation_(float/double)(array, sz, base) : Approximation to I with error O(h^n_p)
+
+.SH AUTHOR
+
+Written by Alvaro R. Puente-Uriona
+
+.SH SEE ALSO
+
+Full documentation: <https://github.com/irukoa/EINT>
+
+.SH COPYRIGHT
+
+License GPLv3+: GNU GPL version 3 or later <https://gnu.org/licenses/gpl.html>. This is free software: you are free to change and redistribute it.  There is NO WARRANTY, to the extent permitted by law.
