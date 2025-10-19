@@ -88,20 +88,19 @@ contains
 
     integer(${ik}$) :: N, Np
     integer(${ik}$) :: i
+    integer(${ik}$) :: idx
 
     N = size(array, kind=${ik}$)
     Np = ((N-1_${ik}$)/base**power) + 1_${ik}$
 
     u = 0.5_${rk}$*(array(1_${ik}$) + array(N))
 
-    !SIMD????
-    !$OMP PARALLEL PRIVATE(i) SHARED(Np, base, power, array)
-    !$OMP DO REDUCTION(+: u)
+    !$OMP PARALLEL DO SIMD PRIVATE(i, idx) SHARED(Np, base, power, array) REDUCTION(+: u)
     do i = 2_${ik}$, Np-1_${ik}$
-      u = u + array((base**power)*(i-1_${ik}$) + 1_${ik}$)
+      idx = (base**power)*(i-1_${ik}$) + 1_${ik}$
+      u = u + array(idx)
     enddo
-    !$OMP END DO
-    !$OMP END PARALLEL
+    !$OMP END PARALLEL DO SIMD
 
     u = u/real(Np-1_${ik}$, ${rk}$)
 

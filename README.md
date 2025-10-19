@@ -57,3 +57,42 @@ Compute $\int_0^1 dx\; x$ using $N = 5$.
 ```
 echo "0.0 0.25 0.5 0.75 1.0" | eint -t
 ```
+
+## Testing
+
+<details>
+<summary>Click me</summary>
+
+### Dependencies:
+
+- ``make``,
+- ``gcc``,
+- ``gfortran``,
+- ``fypp``,
+- ``valgrind``,
+- ``gcov``,
+- ``lcov``, and
+- ``genhtml``.
+
+Updating the source code:
+```
+fypp src/EINT_Core.fypp src/EINT_Core.F90
+fypp src/Prime_Factors.fypp src/Prime_Factors.F90
+```
+
+Testing:
+```
+make test
+```
+
+``LCOV`` report:
+```
+firefox test/report/index.html
+```
+
+``valgrind`` runs (serial and parallel):
+```
+code test/report/valgrind_s_run.log
+code test/report/valgrind_p_run.log
+```
+</details>

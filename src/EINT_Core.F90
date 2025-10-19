@@ -83,20 +83,19 @@ contains
 
     integer(C_INT) :: N, Np
     integer(C_INT) :: i
+    integer(C_INT) :: idx
 
     N = size(array, kind=C_INT)
     Np = ((N - 1_C_INT)/base**power) + 1_C_INT
 
     u = 0.5_C_FLOAT*(array(1_C_INT) + array(N))
 
-    !SIMD????
-    !$OMP PARALLEL PRIVATE(i) SHARED(Np, base, power, array)
-    !$OMP DO REDUCTION(+: u)
+    !$OMP PARALLEL DO PRIVATE(i, idx) SHARED(Np, base, power, array) REDUCTION(+: u)
     do i = 2_C_INT, Np - 1_C_INT
-      u = u + array((base**power)*(i - 1_C_INT) + 1_C_INT)
+      idx = (base**power)*(i - 1_C_INT) + 1_C_INT
+      u = u + array(idx)
     end do
-    !$OMP END DO
-    !$OMP END PARALLEL
+    !$OMP END PARALLEL DO
 
     u = u/real(Np - 1_C_INT, C_FLOAT)
 
@@ -173,20 +172,19 @@ contains
 
     integer(C_INT) :: N, Np
     integer(C_INT) :: i
+    integer(C_INT) :: idx
 
     N = size(array, kind=C_INT)
     Np = ((N - 1_C_INT)/base**power) + 1_C_INT
 
     u = 0.5_C_DOUBLE*(array(1_C_INT) + array(N))
 
-    !SIMD????
-    !$OMP PARALLEL PRIVATE(i) SHARED(Np, base, power, array)
-    !$OMP DO REDUCTION(+: u)
+    !$OMP PARALLEL DO PRIVATE(i, idx) SHARED(Np, base, power, array) REDUCTION(+: u)
     do i = 2_C_INT, Np - 1_C_INT
-      u = u + array((base**power)*(i - 1_C_INT) + 1_C_INT)
+      idx = (base**power)*(i - 1_C_INT) + 1_C_INT
+      u = u + array(idx)
     end do
-    !$OMP END DO
-    !$OMP END PARALLEL
+    !$OMP END PARALLEL DO
 
     u = u/real(Np - 1_C_INT, C_DOUBLE)
 
