@@ -90,12 +90,12 @@ contains
 
     u = 0.5_C_FLOAT*(array(1_C_INT) + array(N))
 
-    !$OMP PARALLEL DO PRIVATE(i, idx) SHARED(Np, base, power, array) REDUCTION(+: u)
+    !$OMP PARALLEL DO SIMD PRIVATE(i, idx) SHARED(Np, base, power, array) REDUCTION(+: u)
     do i = 2_C_INT, Np - 1_C_INT
       idx = (base**power)*(i - 1_C_INT) + 1_C_INT
       u = u + array(idx)
     end do
-    !$OMP END PARALLEL DO
+    !$OMP END PARALLEL DO SIMD
 
     u = u/real(Np - 1_C_INT, C_FLOAT)
 
@@ -179,12 +179,12 @@ contains
 
     u = 0.5_C_DOUBLE*(array(1_C_INT) + array(N))
 
-    !$OMP PARALLEL DO PRIVATE(i, idx) SHARED(Np, base, power, array) REDUCTION(+: u)
+    !$OMP PARALLEL DO SIMD PRIVATE(i, idx) SHARED(Np, base, power, array) REDUCTION(+: u)
     do i = 2_C_INT, Np - 1_C_INT
       idx = (base**power)*(i - 1_C_INT) + 1_C_INT
       u = u + array(idx)
     end do
-    !$OMP END PARALLEL DO
+    !$OMP END PARALLEL DO SIMD
 
     u = u/real(Np - 1_C_INT, C_DOUBLE)
 
