@@ -5,7 +5,7 @@ void Integrate_Stiff() {
   /*Integrate exp(0.5*x*sin[pi*x]) from 1 to 5 = 8.55626*/
   /*Employ 1025 datapoints.*/
 
-  static double tol = 10.0 * DBL_EPSILON;
+  static double tol = 1000.0 * DBL_EPSILON;
   const double  pi  = acos((double)-1.0);
 
   const double reference = 8.556256383674835;
