@@ -216,7 +216,7 @@ int main(int   argc,
         (unsigned int)get_factor_power((int)datasize - 1, (int)base);
     fprintf(stdout, "Base is %i, data size is %li.\n", base, datasize);
     fprintf(stdout, "A factor of (%li - 1) is %i^%i.\n", datasize, base, power);
-    fprintf(stdout, "Expected accuracy is O(h^%i).\n", power);
+    fprintf(stdout, "Expected accuracy is O(h^2*%i).\n", power);
     fprintf(stdout, "Results:\n");
   }
 
