@@ -15,7 +15,7 @@ Numerically integrate data employing the extrapolation method.
 make
 sudo make install PREFIX=/usr/local
 ```
-Default installation in ``/usr/local``. Instals:
+Default installation in ``/usr/local``. Installs:
 - ``eint``: executable program which processes CSV data to compute integrals numerically,
 - ``libeint.so``: shared library providing the functions ``extrapolation_float``, and ``extrapolation_double``; and
 - ``EINT.h``: header file for ``libeint.so``.
