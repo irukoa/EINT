@@ -169,8 +169,8 @@ int main(int   argc,
     resultsize = csv_nrows;
   }
 
-  if (datasize == 1) {
-    fprintf(stderr, "Error: data size is 1\n");
+  if (datasize <= 1) {
+    fprintf(stderr, "Error: data size is smaller than 1\n");
     exit(EXIT_FAILURE);
   }
 
@@ -237,7 +237,9 @@ int main(int   argc,
     free(CSV[i]);
   }
 
-  free(CSV);
+  if (csv_nrows > 0) {
+    free(CSV);
+  }
   free(data);
   free(result);
 

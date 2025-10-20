@@ -59,6 +59,15 @@ read_end:
 
   *nrows = counter;
 
+  if (*nrows == 0) {
+#ifdef DBG_PRF
+    status = EXIT_SUCCESS;
+    return (status);
+#else
+    return;
+#endif
+  }
+
   strcpy(copy_buffer, local_buffer[0]);
   token   = strtok(copy_buffer, separators);
   counter = 0;
