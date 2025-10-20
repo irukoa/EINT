@@ -12,7 +12,7 @@ MNPATH  := /usr/local/man
 CC := gcc
 FC := gfortran
 
-FLAGS    := -Wall -Wextra -pedantic
+FLAGS    := -Wall -Wextra -pedantic -fopenmp
 CFLAGS   := -MMD -std=gnu11
 FFLAGS   := -std=f2018
 LIBFLAGS := -fpic -shared
@@ -143,6 +143,8 @@ $(TESTEXE): $(TESTOBJS) $(TESTSRCS) $(TESTDIR)/Driver.c | $(DBGBIN)
 runtest: $(TESTEXE)
 		./test/Test_Link_to_Binary.sh
 		./$(TESTEXE) 1> /dev/null
+		valgrind --leak-check=full ./$(TESTEXE) > tmpp.log 2>&1
+		export OMP_NUM_THREADS=1
 		valgrind --leak-check=full ./$(TESTEXE) > tmps.log 2>&1
 		$(RM) $(TESTDIR)/*.gcda
 		$(RM) $(TESTDIR)/*.gcno
@@ -151,6 +153,7 @@ runtest: $(TESTEXE)
 		$(CP) $(DBGOBJ)/*.gcno $(TESTDIR)
 		lcov --capture --directory $(TESTDIR) --output-file=$(TESTDIR)/coverage.info > /dev/null 2>&1
 		genhtml $(TESTDIR)/coverage.info --output-directory=$(TESTDIR)/report > /dev/null 2>&1
+		$(MV) tmpp.log $(TESTDIR)/report/valgrind_p_run.log
 		$(MV) tmps.log $(TESTDIR)/report/valgrind_s_run.log
 
 install: release
