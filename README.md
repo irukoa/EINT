@@ -54,7 +54,7 @@ Additional resources, use cases and examples can be found in the ``example/`` di
 
 ### Quick example
 
-Compute $\int_0^1 dx\; x$ using $N = 5$.
+Compute $`\int_0^1 dx\; x`$ using $N = 5$.
 ```
 echo "0.0 0.25 0.5 0.75 1.0" | eint -t
 ```

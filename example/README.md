@@ -13,7 +13,7 @@ By default, the binary will wait for user input,
 >$ eint
 
 ```
-The user shall provide valid (space- or comma-separated) CSV data. The stream will be terminated after pressing ``ENTER`` over an empty line. For example, assuming we want to calculate $\int_0^1 dx\; x$ using 5 points,
+The user shall provide valid (space- or comma-separated) CSV data. The stream will be terminated after pressing ``ENTER`` over an empty line. For example, assuming we want to calculate $`\int_0^1 dx\; x`$ using 5 points,
 ```
 >$ eint
 0.00
@@ -58,7 +58,7 @@ or by employing the ``-f`` option,
 ```
 The accuracy of the method depends on the number of discretisation points $N$: given a prime factorisation of $N-1$, $N-1 = 2^{n_2}3^{n_3}\cdots$, the user can employ a custom prime base $p$ by employing the ``-b`` option. If $p^{n_p}$ is a factor of $N-1$, then the expected accuracy of the result will be $\mathcal{O}(h^{2n_p})$. The default value is $p=2$.
 
-For example, the following computes $I = (10-1)^{-1}\int_1^{10} dx\; x^2 = 37$ using $N = 10 = 3^2 + 1$ points,
+For example, the following computes $`I = (10-1)^{-1}\int_1^{10} dx\; x^2 = 37`$ using $N = 10 = 3^2 + 1$ points,
 ```
 eint -t -b 3
 1 4 9 16 25 36 49 64 81 100
@@ -76,12 +76,12 @@ The library includes the following functions:
 
 ```c
 float extrapolation_float(float *array,
-size_t sz,
-int base);
+                          size_t sz,
+                          int base);
 
 double extrapolation_double(double *array,
-size_t sz,
-int base);
+                            size_t sz,
+                            int base);
 ```
 A basic usage can be found in the file ``Example.c``. This program can be compiled by running
 ```
