@@ -1,6 +1,7 @@
 #ifndef PRIME_FACTORS
 #define PRIME_FACTORS
 
+#include <stdbool.h>
 #include <stdlib.h>
 
 bool is_prime(int number);
