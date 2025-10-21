@@ -28,11 +28,11 @@ void print_help(char  *argv[],
       "    The next arguments are useful for processing large CSV files.\n");
   fprintf(stdout,
           "    -c, MAX_BUFFER_COL_SIZE: a custom maximum column size for "
-          "reading CSV files. Must be > %li.\n",
+          "reading CSV files. Must be > %li (the default value).\n",
           buf_min_colsize);
   fprintf(stdout,
           "    -r, MAX_BUFFER_ROW_SIZE: a custom maximum row size for reading "
-          "CSV files. Must be > %li.\n",
+          "CSV files. Must be > %li (the default value).\n",
           buf_min_rowsize);
   fprintf(stdout, "\n");
   fprintf(stdout, "When processing CSV files, we follow "

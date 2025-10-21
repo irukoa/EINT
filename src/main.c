@@ -23,10 +23,10 @@ int main(int   argc,
   bool v_flag = false;
 
   bool   cust_buf_colsize = false;
-  size_t buf_colsize      = 1024;
+  size_t buf_colsize      = BUFFER_MIN_COLSIZE;
 
   bool   cust_buf_rowsize = false;
-  size_t buf_rowsize      = 1024;
+  size_t buf_rowsize      = BUFFER_MIN_ROWSIZE;
 
   bool  file_flag = false;
   char *file      = NULL;
