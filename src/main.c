@@ -67,7 +67,7 @@ int main(int   argc,
 
 #ifdef DBG_PRF
   if (CLIstatus == EXIT_FAILURE) {
-    fprintf(stderr, "Error during CLI processing.");
+    fprintf(stderr, "Error during CLI processing.\n");
     exit(EXIT_FAILURE);
   }
 #endif
@@ -115,7 +115,7 @@ int main(int   argc,
                  &csv_nrows);
 #ifdef DBG_PRF
     if (CSVstatus == EXIT_FAILURE) {
-      fprintf(stderr, "Error during CSV processing.");
+      fprintf(stderr, "Error during CSV processing.\n");
       exit(EXIT_FAILURE);
     }
 #endif
@@ -131,7 +131,7 @@ int main(int   argc,
         read_csv(stdin, buf_colsize, buf_rowsize, &CSV, &csv_ncols, &csv_nrows);
 #ifdef DBG_PRF
     if (CSVstatus == EXIT_FAILURE) {
-      fprintf(stderr, "Error during CSV processing.");
+      fprintf(stderr, "Error during CSV processing.\n");
       exit(EXIT_FAILURE);
     }
 #endif
@@ -170,7 +170,7 @@ int main(int   argc,
   }
 
   if (datasize <= 1) {
-    fprintf(stderr, "Error: data size is smaller than 1\n");
+    fprintf(stderr, "Error: data size is smaller or equal to 1\n");
     exit(EXIT_FAILURE);
   }
 

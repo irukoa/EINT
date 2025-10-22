@@ -23,30 +23,33 @@ read_csv(FILE     *stream,
      For manual input, press ENTER with no data to end the stream.
   */
 
-  size_t counter = 0;
-  size_t in_len  = 0;
+  size_t      counter     = 0;
+  size_t      in_len      = 0;
+  StringNode *string_list = NULL;
 
-  char       copy_buffer[max_rowsize];
   char      *token        = NULL;
   char      *check        = NULL;
   const char separators[] = " ,;";
 
-  char local_buffer[max_rowsize][max_colsize];
+  char  local_buffer[max_colsize];
+  char *copy_buffer = NULL;
 
 #ifdef DBG_PRF
   int status;
 #endif
 
-  while (fgets(local_buffer[counter], max_colsize, stream) != NULL) {
-    in_len = strlen(local_buffer[counter]);
-    if (in_len == 1 && local_buffer[counter][in_len - 1] == '\n') {
+  while (fgets(local_buffer, max_colsize, stream) != NULL) {
+    in_len = strlen(local_buffer);
+    if (in_len == 1 && local_buffer[in_len - 1] == '\n') {
       goto read_end;
     }
+    addNodeAtEnd(&string_list, local_buffer);
     counter++;
   }
 
   if (!feof(stream)) {
     fprintf(stderr, "Error reading data : could not read whole CSV file.\n");
+    freeList(&string_list);
 #ifdef DBG_PRF
     status = EXIT_FAILURE;
     return (status);
@@ -60,6 +63,7 @@ read_end:
   *nrows = counter;
 
   if (*nrows == 0) {
+    freeList(&string_list);
 #ifdef DBG_PRF
     status = EXIT_SUCCESS;
     return (status);
@@ -68,13 +72,14 @@ read_end:
 #endif
   }
 
-  strcpy(copy_buffer, local_buffer[0]);
-  token   = strtok(copy_buffer, separators);
-  counter = 0;
+  copy_buffer = sourceString(string_list);
+  token       = strtok(copy_buffer, separators);
+  counter     = 0;
   while (token != NULL) {
     counter++;
     token = strtok(NULL, separators);
   }
+  free(copy_buffer);
 
   *ncols = counter;
 
@@ -82,6 +87,7 @@ read_end:
   if (*CSV == NULL) {
     fprintf(stderr, "Error allocating CSV : nrows: %li : %s\n", *nrows,
             strerror(errno));
+    freeList(&string_list);
     exit(EXIT_FAILURE);
   }
   for (size_t i = 0; i < *nrows; i++) {
@@ -89,15 +95,20 @@ read_end:
     if ((*CSV)[i] == NULL) {
       fprintf(stderr, "Error allocating CSV : ncols: %li : %s\n", *ncols,
               strerror(errno));
+      freeList(&string_list);
       exit(EXIT_FAILURE);
     }
   }
 
   for (size_t i = 0; i < *nrows; i++) {
-    token = strtok(local_buffer[i], separators);
+    copy_buffer = sourceString(string_list);
+    rmNodeAtBeggining(&string_list);
+    token = strtok(copy_buffer, separators);
     for (size_t j = 0; j < *ncols; j++) {
       if (token == NULL) {
         fprintf(stderr, "Error reading data : CSV file is irregular.\n");
+        free(copy_buffer);
+        freeList(&string_list);
 #ifdef DBG_PRF
         status = EXIT_FAILURE;
         return (status);
@@ -110,6 +121,8 @@ read_end:
         fprintf(stderr, "CSV input value not recognized:\n");
         fprintf(stderr, "Row : %li | Col : %li\n", i + 1, j + 1);
         fprintf(stderr, "Value : %s\n", token);
+        free(copy_buffer);
+        freeList(&string_list);
 #ifdef DBG_PRF
         status = EXIT_FAILURE;
         return (status);
@@ -119,7 +132,9 @@ read_end:
       }
       token = strtok(NULL, separators);
     }
+    free(copy_buffer);
   }
+  freeList(&string_list);
 #ifdef DBG_PRF
   status = EXIT_SUCCESS;
   return (status);
