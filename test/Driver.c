@@ -12,6 +12,7 @@
 #include "Test_CLI_Processing.c"
 #include "Test_CSV_Processing.c"
 #include "Test_EINT.c"
+#include "Test_String_Linked_Lists.c"
 
 int main() {
   fprintf(stderr, "\n");
@@ -87,6 +88,13 @@ int main() {
       stderr,
       ">>Test 3.10: check EINT: 4th order polynomial (dp) (Extrapolation)\n");
   EINT_Test_check_double_4thOrdPoly_E();
+  fprintf(stderr, ">>Test suite #4: String Linked Lists\n");
+  fprintf(stderr, ">>Test 4.1: remove from empty list\n");
+  String_Linked_Lists_check_remove_from_empty_list();
+  fprintf(stderr, ">>Test 4.2: allocate, use and free list\n");
+  String_Linked_Lists_check_freeList();
+  fprintf(stderr, ">>Test 4.3: test string retrieval\n");
+  String_Linked_Lists_check_source_string();
   fprintf(stderr, ">>UNIT TESTS Finished\n");
   fprintf(stderr, "===============================\n");
   fprintf(stderr, ">>Starting FUNCTIONAL TESTS\n");
