@@ -9,8 +9,7 @@
 #include <unistd.h>
 
 void print_help(char  *argv[],
-                size_t buf_min_colsize,
-                size_t buf_min_rowsize);
+                size_t buf_min_size);
 
 void print_version(char *argv[]);
 
@@ -26,11 +25,8 @@ check_command_line_input(int           argc,
                               bool         *file_flag,
                               char         *file[],
                               bool         *process_cols,
-                              bool         *cust_buf_colsize,
-                              size_t       *buf_colsize,
-                              size_t        buf_min_colsize,
-                              bool         *cust_buf_rowsize,
-                              size_t       *buf_rowsize,
-                              size_t        buf_min_rowsize);
+                              bool         *cust_bufsize,
+                              size_t       *bufsize,
+                              size_t        buf_min_size);
 
 #endif

@@ -6,8 +6,7 @@ int
 void
 #endif
 read_csv(FILE     *stream,
-              size_t    max_colsize,
-              size_t    max_rowsize,
+              size_t    max_bufsize,
               double ***CSV,
               size_t   *ncols,
               size_t   *nrows) {
@@ -31,14 +30,14 @@ read_csv(FILE     *stream,
   char      *check        = NULL;
   const char separators[] = " ,;";
 
-  char  local_buffer[max_colsize];
+  char  local_buffer[max_bufsize];
   char *copy_buffer = NULL;
 
 #ifdef DBG_PRF
   int status;
 #endif
 
-  while (fgets(local_buffer, max_colsize, stream) != NULL) {
+  while (fgets(local_buffer, max_bufsize, stream) != NULL) {
     in_len = strlen(local_buffer);
     if (in_len == 1 && local_buffer[in_len - 1] == '\n') {
       goto read_end;

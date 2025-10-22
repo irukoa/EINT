@@ -3,14 +3,13 @@
 #include "Project_Metadata.h"
 
 void print_help(char  *argv[],
-                size_t buf_min_colsize,
-                size_t buf_min_rowsize) {
+                size_t buf_min_size) {
   fprintf(stdout,
           "Numerically integrate data employing the extrapolation method.\n");
   fprintf(stdout, "\n");
   fprintf(stdout,
           "Usage: %s [-v] [-h] [-b BASE] [-f FILE] [-t] "
-          "[-c MAX_BUFFER_COL_SIZE] [-r MAX_BUFFER_ROW_SIZE]\n",
+          "[-c BUFFER_SIZE] \n",
           argv[0]);
   fprintf(stdout, "\n");
   fprintf(stdout,
@@ -27,13 +26,9 @@ void print_help(char  *argv[],
       stdout,
       "    The next arguments are useful for processing large CSV files.\n");
   fprintf(stdout,
-          "    -c, MAX_BUFFER_COL_SIZE: a custom maximum column size for "
+          "    -c, BUFFER_SIZE: a custom maximum column size for "
           "reading CSV files. Must be > %li (the default value).\n",
-          buf_min_colsize);
-  fprintf(stdout,
-          "    -r, MAX_BUFFER_ROW_SIZE: a custom maximum row size for reading "
-          "CSV files. Must be > %li (the default value).\n",
-          buf_min_rowsize);
+          buf_min_size);
   fprintf(stdout, "\n");
   fprintf(stdout, "When processing CSV files, we follow "
                   "https://www.rfc-editor.org/rfc/rfc4180.txt with:\n");
@@ -67,12 +62,9 @@ check_command_line_input(int           argc,
                               bool         *file_flag,
                               char         *file[],
                               bool         *process_cols,
-                              bool         *cust_buf_colsize,
-                              size_t       *buf_colsize,
-                              size_t        buf_min_colsize,
-                              bool         *cust_buf_rowsize,
-                              size_t       *buf_rowsize,
-                              size_t        buf_min_rowsize) {
+                              bool         *cust_bufsize,
+                              size_t       *bufsize,
+                              size_t        buf_min_size) {
 
   int          opt;
   char        *check = NULL;
@@ -80,7 +72,7 @@ check_command_line_input(int           argc,
   extern char *optarg;
   extern int   optind, opterr, optopt;
 
-  static char allowed_flags[] = "vhb:f:tc:r:";
+  static char allowed_flags[] = "vhb:f:tc:";
 
   opterr = 0;
   optind = 1;
@@ -92,7 +84,7 @@ check_command_line_input(int           argc,
   while ((opt = getopt(argc, argv, allowed_flags)) != -1) {
     switch (opt) {
     case 'h':
-      print_help(argv, buf_min_colsize, buf_min_rowsize);
+      print_help(argv, buf_min_size);
 #ifdef DBG_PRF
       status = EXIT_SUCCESS;
       return (status);
@@ -103,8 +95,8 @@ check_command_line_input(int           argc,
       *v_flag = true;
       break;
     case 'c':
-      *cust_buf_colsize = true;
-      tmp               = strtol(optarg, &check, 10);
+      *cust_bufsize = true;
+      tmp           = strtol(optarg, &check, 10);
       if (*check != '\0' || tmp < 1) {
         fprintf(stderr, "-c option requires a positive integer value\n");
 #ifdef DBG_PRF
@@ -114,21 +106,7 @@ check_command_line_input(int           argc,
         exit(EXIT_FAILURE);
 #endif
       }
-      *buf_colsize = (size_t)tmp;
-      break;
-    case 'r':
-      *cust_buf_rowsize = true;
-      tmp               = strtol(optarg, &check, 10);
-      if (*check != '\0' || tmp < 1) {
-        fprintf(stderr, "-r option requires a positive integer value\n");
-#ifdef DBG_PRF
-        status = EXIT_FAILURE;
-        return (status);
-#else
-        exit(EXIT_FAILURE);
-#endif
-      }
-      *buf_rowsize = (size_t)tmp;
+      *bufsize = (size_t)tmp;
       break;
     case 'f':
       *file_flag = true;
@@ -161,7 +139,7 @@ check_command_line_input(int           argc,
       fprintf(stderr, "Invalid option '-%c'\n", (char)optopt);
       fprintf(stdout,
               "Usage: %s [-v] [-h] [-b BASE] [-f FILE] [-t] "
-              "[-c MAX_BUFFER_COL_SIZE] [-r MAX_BUFFER_ROW_SIZE]\n",
+              "[-c BUFFER_SIZE]\n",
               argv[0]);
 #ifdef DBG_PRF
       status = EXIT_FAILURE;

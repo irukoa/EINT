@@ -3,12 +3,8 @@
 #include "EINT.h"
 #include "Prime_Factors.h"
 
-#ifndef BUFFER_MIN_COLSIZE
-#define BUFFER_MIN_COLSIZE (size_t)1024
-#endif
-
-#ifndef BUFFER_MIN_ROWSIZE
-#define BUFFER_MIN_ROWSIZE (size_t)1024
+#ifndef BUFFER_MIN_SIZE
+#define BUFFER_MIN_SIZE (size_t)1024
 #endif
 
 int main(int   argc,
@@ -22,11 +18,8 @@ int main(int   argc,
 
   bool v_flag = false;
 
-  bool   cust_buf_colsize = false;
-  size_t buf_colsize      = BUFFER_MIN_COLSIZE;
-
-  bool   cust_buf_rowsize = false;
-  size_t buf_rowsize      = BUFFER_MIN_ROWSIZE;
+  bool   cust_bufsize = false;
+  size_t bufsize      = BUFFER_MIN_SIZE;
 
   bool  file_flag = false;
   char *file      = NULL;
@@ -42,19 +35,16 @@ int main(int   argc,
   CLIstatus =
 #endif
       check_command_line_input(argc, argv, &v_flag, &base, &file_flag, &file,
-                               &process_cols, &cust_buf_colsize, &buf_colsize,
-                               BUFFER_MIN_COLSIZE, &cust_buf_rowsize,
-                               &buf_rowsize, BUFFER_MIN_ROWSIZE);
+                               &process_cols, &cust_bufsize, &bufsize,
+                               BUFFER_MIN_SIZE);
 
 #ifdef DBG_PRF
   fprintf(stderr, "========== DEBUG INFO ==========\n");
   fprintf(stderr, "STDIN OPEN: %i\n", redirected_stdin);
   fprintf(stderr, "BASE: %i\n", base);
   fprintf(stderr, "V FLAG: %i\n", v_flag);
-  fprintf(stderr, "C FLAG: %i\n", cust_buf_colsize);
-  fprintf(stderr, "buf_colsize: %li\n", buf_colsize);
-  fprintf(stderr, "R FLAG: %i\n", cust_buf_rowsize);
-  fprintf(stderr, "buf_rowsize: %li\n", buf_rowsize);
+  fprintf(stderr, "C FLAG: %i\n", cust_bufsize);
+  fprintf(stderr, "bufsize: %li\n", bufsize);
   fprintf(stderr, "F FLAG: %i\n", file_flag);
   fprintf(stderr, "FILE: \"%s\"\n", file);
   if (process_cols) {
@@ -75,13 +65,8 @@ int main(int   argc,
   if (v_flag)
     print_version(argv);
 
-  if (BUFFER_MIN_COLSIZE > buf_colsize) {
-    fprintf(stderr, "Minimum buffer column size is %li.\n", BUFFER_MIN_COLSIZE);
-    exit(EXIT_FAILURE);
-  }
-
-  if (BUFFER_MIN_ROWSIZE > buf_rowsize) {
-    fprintf(stderr, "Minimum buffer row size is %li.\n", BUFFER_MIN_ROWSIZE);
+  if (BUFFER_MIN_SIZE > bufsize) {
+    fprintf(stderr, "Minimum buffer column size is %li.\n", BUFFER_MIN_SIZE);
     exit(EXIT_FAILURE);
   }
 
@@ -111,8 +96,7 @@ int main(int   argc,
 #ifdef DBG_PRF
     CSVstatus =
 #endif
-        read_csv(file_stream, buf_colsize, buf_rowsize, &CSV, &csv_ncols,
-                 &csv_nrows);
+        read_csv(file_stream, bufsize, &CSV, &csv_ncols, &csv_nrows);
 #ifdef DBG_PRF
     if (CSVstatus == EXIT_FAILURE) {
       fprintf(stderr, "Error during CSV processing.\n");
@@ -128,7 +112,7 @@ int main(int   argc,
 #ifdef DBG_PRF
     CSVstatus =
 #endif
-        read_csv(stdin, buf_colsize, buf_rowsize, &CSV, &csv_ncols, &csv_nrows);
+        read_csv(stdin, bufsize, &CSV, &csv_ncols, &csv_nrows);
 #ifdef DBG_PRF
     if (CSVstatus == EXIT_FAILURE) {
       fprintf(stderr, "Error during CSV processing.\n");

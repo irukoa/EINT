@@ -30,19 +30,14 @@ int main() {
   fprintf(stderr,
           ">>Test 1.5: check CLI processing: -c option invalid input\n");
   CLI_Processing_Test_check_command_line_input_cinvalid();
-  fprintf(stderr, ">>Test 1.6: check CLI processing: -r option valid input\n");
-  CLI_Processing_Test_check_command_line_input_rvalid();
-  fprintf(stderr,
-          ">>Test 1.7: check CLI processing: -r option invalid input\n");
-  CLI_Processing_Test_check_command_line_input_rinvalid();
-  fprintf(stderr, ">>Test 1.8: check CLI processing: -b option valid input\n");
+  fprintf(stderr, ">>Test 1.6: check CLI processing: -b option valid input\n");
   CLI_Processing_Test_check_command_line_input_bvalid();
   fprintf(stderr,
-          ">>Test 1.9: check CLI processing: -b option invalid input\n");
+          ">>Test 1.7: check CLI processing: -b option invalid input\n");
   CLI_Processing_Test_check_command_line_input_binvalid();
-  fprintf(stderr, ">>Test 1.10: check CLI processing: -f option valid input\n");
+  fprintf(stderr, ">>Test 1.8: check CLI processing: -f option valid input\n");
   CLI_Processing_Test_check_command_line_input_fvalid();
-  fprintf(stderr, ">>Test 1.10: check CLI processing: invalid flag\n");
+  fprintf(stderr, ">>Test 1.9: check CLI processing: invalid flag\n");
   CLI_Processing_Test_check_command_line_input_invalid_flag();
   fprintf(stderr, ">>Test suite #2: CSV Processing\n");
   fprintf(stderr, ">>Test 2.1: check CSV processing: valid file\n");

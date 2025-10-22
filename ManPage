@@ -22,7 +22,7 @@ The program considers each column j of the CSV file as a discretisation of the f
 
 .SH OPTIONS
 
-Usage: eint [-v] [-h] [-b BASE] [-f FILE] [-t] [-c MAX_BUFFER_COL_SIZE] [-r MAX_BUFFER_ROW_SIZE]
+Usage: eint [-v] [-h] [-b BASE] [-f FILE] [-t] [-c BUFFER_SIZE]
 
 -v,                    : print version and verbose option.
 
@@ -37,9 +37,7 @@ Usage: eint [-v] [-h] [-b BASE] [-f FILE] [-t] [-c MAX_BUFFER_COL_SIZE] [-r MAX_
 
 The next arguments are useful for processing large CSV files.
 
--c, MAX_BUFFER_COL_SIZE: a custom maximum column size for reading CSV files. Must be > 1024 (the default value).
-
--r, MAX_BUFFER_ROW_SIZE: a custom maximum row size for reading CSV files. Must be > 1024 (the default value).
+-c, BUFFER_SIZE: a custom maximum column size for reading CSV files. Must be > 1024 (the default value).
 
 .SH EXAMPLE
 

@@ -10,16 +10,14 @@ void CSV_Processing_Test_check_valid_file() {
   size_t   csv_ncols = 0;
   size_t   csv_nrows = 0;
 
-  size_t buf_colsize = 1024;
-  size_t buf_rowsize = 1024;
+  size_t bufsize = 1024;
 
   if (file_stream == NULL) {
     fprintf(stderr, "%s\n", strerror(errno));
     exit(EXIT_FAILURE);
   }
 
-  int status = read_csv(file_stream, buf_colsize, buf_rowsize, &CSV, &csv_ncols,
-                        &csv_nrows);
+  int status = read_csv(file_stream, bufsize, &CSV, &csv_ncols, &csv_nrows);
   fclose(file_stream);
 
   assert(status == EXIT_SUCCESS);
@@ -44,16 +42,14 @@ void CSV_Processing_Test_check_irregular_file() {
   size_t   csv_ncols = 0;
   size_t   csv_nrows = 0;
 
-  size_t buf_colsize = 1024;
-  size_t buf_rowsize = 1024;
+  size_t bufsize = 1024;
 
   if (file_stream == NULL) {
     fprintf(stderr, "%s\n", strerror(errno));
     exit(EXIT_FAILURE);
   }
 
-  int status = read_csv(file_stream, buf_colsize, buf_rowsize, &CSV, &csv_ncols,
-                        &csv_nrows);
+  int status = read_csv(file_stream, bufsize, &CSV, &csv_ncols, &csv_nrows);
   fclose(file_stream);
 
   assert(status == EXIT_FAILURE);
@@ -76,16 +72,14 @@ void CSV_Processing_Test_check_faulty_conversion() {
   size_t   csv_ncols = 0;
   size_t   csv_nrows = 0;
 
-  size_t buf_colsize = 1024;
-  size_t buf_rowsize = 1024;
+  size_t bufsize = 1024;
 
   if (file_stream == NULL) {
     fprintf(stderr, "%s\n", strerror(errno));
     exit(EXIT_FAILURE);
   }
 
-  int status = read_csv(file_stream, buf_colsize, buf_rowsize, &CSV, &csv_ncols,
-                        &csv_nrows);
+  int status = read_csv(file_stream, bufsize, &CSV, &csv_ncols, &csv_nrows);
   fclose(file_stream);
 
   assert(status == EXIT_FAILURE);

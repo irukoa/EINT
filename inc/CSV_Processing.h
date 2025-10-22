@@ -14,8 +14,7 @@ int
 void
 #endif
 read_csv(FILE     *stream,
-              size_t    max_colsize,
-              size_t    max_rowsize,
+              size_t    max_bufsize,
               double ***CSV,
               size_t   *ncols,
               size_t   *nrows);
