@@ -37,7 +37,7 @@ Usage: eint [-v] [-h] [-b BASE] [-f FILE] [-t] [-c BUFFER_SIZE]
 
 The next arguments are useful for processing large CSV files.
 
--c, BUFFER_SIZE: a custom maximum column size for reading CSV files. Must be > 1024 (the default value).
+-c, BUFFER_SIZE        : a custom maximum column size for reading CSV files. Must be > 1024 (the default value).
 
 .SH EXAMPLE
 
