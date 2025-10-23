@@ -37,8 +37,8 @@ void print_help(char  *argv[],
       stdout,
       "- - Row#1, with C columns acts as reference for the rest of the CSV.\n");
   fprintf(stdout, "- - For Row#i with C_i columns:\n");
-  fprintf(stdout, "- - - C_i >= C: Only the first C columns are considered.\n");
-  fprintf(stdout, "- - - C_i  < C: Error.\n");
+  fprintf(stdout, "- - - C_i > C: Error.\n");
+  fprintf(stdout, "- - - C_i < C: Error.\n");
   fprintf(stdout, "- CSV headers are NOT allowed.\n");
   fprintf(stdout,
           "For manual input, press ENTER with no data to end the stream.\n");

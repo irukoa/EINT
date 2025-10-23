@@ -16,7 +16,7 @@ read_csv(FILE     *stream,
      - No irregular data:
      - - Row#1, with C columns acts as reference for the rest of the CSV.
      - - For Row#i with C_i columns:
-     - - - C_i >= C: Only the first C columns are considered.
+     - - - C_i > C: Error.
      - - - C_i < C: Error.
      - CSV headers are NOT allowed.
      For manual input, press ENTER with no data to end the stream.
