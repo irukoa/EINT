@@ -26,8 +26,10 @@ read_csv(FILE     *stream,
   size_t      in_len      = 0;
   StringNode *string_list = NULL;
 
-  char      *token        = NULL;
-  char      *check        = NULL;
+  char *token     = NULL;
+  char *check     = NULL;
+  char *numString = NULL;
+
   const char separators[] = " ,;";
 
   char  local_buffer[max_bufsize];
@@ -104,7 +106,8 @@ read_end:
     rmNodeAtBeggining(&string_list);
     token = strtok(copy_buffer, separators);
     for (size_t j = 0; j < *ncols; j++) {
-      if (token == NULL) {
+      if (((token[strlen(token) - 1] == '\n') && (j != *ncols - 1)) ||
+          ((token[strlen(token) - 1] != '\n') && (j == *ncols - 1))) {
         fprintf(stderr, "Error reading data : CSV file is irregular.\n");
         free(copy_buffer);
         freeList(&string_list);
@@ -115,11 +118,17 @@ read_end:
         exit(EXIT_FAILURE);
 #endif
       }
-      ((*CSV)[i])[j] = strtod(token, &check);
-      if (!(strlen(check) == 0 || token[strlen(token) - 1] == '\n')) {
+      numString = strdup(token);
+      if (j == *ncols - 1) {
+        // We remove the \n character from numString.
+        numString[strlen(numString) - 1] = '\0';
+      }
+      ((*CSV)[i])[j] = strtod(numString, &check);
+      if (strlen(check) != 0) {
         fprintf(stderr, "CSV input value not recognized:\n");
         fprintf(stderr, "Row : %li | Col : %li\n", i + 1, j + 1);
         fprintf(stderr, "Value : %s\n", token);
+        free(numString);
         free(copy_buffer);
         freeList(&string_list);
 #ifdef DBG_PRF
@@ -129,6 +138,7 @@ read_end:
         exit(EXIT_FAILURE);
 #endif
       }
+      free(numString);
       token = strtok(NULL, separators);
     }
     free(copy_buffer);
