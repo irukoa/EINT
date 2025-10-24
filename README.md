@@ -71,6 +71,7 @@ echo "0.0 0.25 0.5 0.75 1.0" | eint -t
 - ``gfortran``,
 - ``clang``,
 - ``clang-format`` (>= ``v20.1``),
+- ``clang-tidy`` (>= ``v20.1``),
 - ``fypp``,
 - ``pre-commit``,
 - ``valgrind``,
@@ -103,5 +104,11 @@ firefox test/report/index.html
 ```
 code test/report/valgrind_s_run.log
 code test/report/valgrind_p_run.log
+```
+
+Static analysis:
+```
+make static_analysis
+code test/static_analysis_reports/*.rpt
 ```
 </details>

@@ -4,3 +4,4 @@
 *.gcda
 *.info
 report
+static_analysis_reports

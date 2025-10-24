@@ -1,0 +1,15 @@
+.PHONY: static_analysis
+
+TIDY       := clang-tidy
+TIDYCHECKS := --checks='modernize*,clang-diagnostic-*,clang-analyzer-*'
+TIDYDIR    := $(TESTDIR)/static_analysis_reports
+
+REPORTS := $(filter %.rpt, $(patsubst $(SRC)/%.c,$(TIDYDIR)/%.rpt,$(SRCS)))
+
+static_analysis: $(REPORTS)
+
+$(TIDYDIR)/%.rpt: $(SRC)/%.c | $(TIDYDIR)
+		-$(TIDY) $(TIDYCHECKS) $^ -- $(FLAGS) $(CFLAGS) $(RELFLAGS) -I$(INCLUDE) $(DEFINITIOS) $(LDFLAGS) $(LDLIBS) > $@
+
+$(TIDYDIR):
+		$(MKDIR) $@

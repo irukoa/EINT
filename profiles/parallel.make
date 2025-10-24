@@ -125,6 +125,8 @@ $(DBGOBJ)/%.mod: $(SRC)/%.F90 | $(DBGOBJ)
 $(BIN) $(OBJ) $(DBGBIN) $(DBGOBJ):
 		$(MKDIR) $@
 
+-include static_analysis
+
 clean:
 		$(RM) $(OBJ) $(BIN) $(DBGBIN) $(DBGOBJ)
 		$(RM) $(TESTDIR)/*.gcda
@@ -133,6 +135,7 @@ clean:
 		$(RM) $(TESTDIR)/*.o
 		$(RM) $(TESTDIR)/coverage.info
 		$(RM) $(TESTDIR)/report
+		$(RM) $(TIDYDIR)
 
 test: clean $(TESTEXE) runtest
 
