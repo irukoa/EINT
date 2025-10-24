@@ -1,4 +1,4 @@
-# Maintainer: Alvaro R. Puente-Uriona <irukoa@live.com>
+# Maintainer: Alvaro R. Puente-Uriona
 pkgname=eint
 _pkgfname=EINT
 pkgver=v0.1.0
