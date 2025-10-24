@@ -115,3 +115,28 @@ void CSV_Processing_Test_check_faulty_conversion() {
   free(CSV);
   fprintf(stderr, ">>Test OK\n");
 }
+
+void CSV_Processing_Test_check_empty() {
+
+  FILE *file_stream = fopen("./test/suites/EmptyCSV.dat", "r");
+
+  double **CSV       = NULL;
+  size_t   csv_ncols = 0;
+  size_t   csv_nrows = 0;
+
+  size_t bufsize = 1024;
+
+  if (file_stream == NULL) {
+    fprintf(stderr, "%s\n", strerror(errno));
+    exit(EXIT_FAILURE);
+  }
+
+  int status = read_csv(file_stream, bufsize, &CSV, &csv_ncols, &csv_nrows);
+  fclose(file_stream);
+
+  assert(status == EXIT_SUCCESS);
+  assert(CSV == NULL);
+  assert(csv_ncols == 0);
+  assert(csv_nrows == 0);
+  fprintf(stderr, ">>Test OK\n");
+}

@@ -172,3 +172,26 @@ void CLI_Processing_Test_check_command_line_input_invalid_flag() {
   assert(status == EXIT_FAILURE);
   fprintf(stderr, ">>Test OK\n");
 }
+
+void CLI_Processing_Test_check_command_line_input_vt() {
+
+  char *args[] = {"Teint", "-v", "-t", NULL};
+  int   argc   = 3;
+
+  size_t buf_min_size = 10;
+
+  bool         v_flag;
+  unsigned int base;
+  bool         file_flag;
+  char        *file;
+  bool         process_cols;
+  bool         cust_bufsize;
+  size_t       bufsize;
+
+  int status = check_command_line_input(argc, args, &v_flag, &base, &file_flag,
+                                        &file, &process_cols, &cust_bufsize,
+                                        &bufsize, buf_min_size);
+
+  assert(status == EXIT_SUCCESS);
+  fprintf(stderr, ">>Test OK\n");
+}

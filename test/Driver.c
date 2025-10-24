@@ -39,6 +39,8 @@ int main() {
   CLI_Processing_Test_check_command_line_input_fvalid();
   fprintf(stderr, ">>Test 1.9: check CLI processing: invalid flag\n");
   CLI_Processing_Test_check_command_line_input_invalid_flag();
+  fprintf(stderr, ">>Test 1.10: check CLI processing: -v and -t flags\n");
+  CLI_Processing_Test_check_command_line_input_vt();
   fprintf(stderr, ">>Test suite #2: CSV Processing\n");
   fprintf(stderr, ">>Test 2.1: check CSV processing: valid file\n");
   CSV_Processing_Test_check_valid_file();
@@ -46,6 +48,8 @@ int main() {
   CSV_Processing_Test_check_irregular_file();
   fprintf(stderr, ">>Test 2.3: check CSV processing: faulty file\n");
   CSV_Processing_Test_check_faulty_conversion();
+  fprintf(stderr, ">>Test 2.4: check CSV processing: empty file\n");
+  CSV_Processing_Test_check_empty();
   fprintf(stderr, ">>Test suite #3: EINT\n");
   fprintf(stderr, ">>Test 3.1: check EINT: trivial case (sp)\n");
   EINT_Test_check_float_trivial_case();
