@@ -41,10 +41,10 @@ int main(int   argc,
 #ifdef DBG_PRF
   fprintf(stderr, "========== DEBUG INFO ==========\n");
   fprintf(stderr, "STDIN OPEN: %i\n", redirected_stdin);
-  fprintf(stderr, "BASE: %i\n", base);
+  fprintf(stderr, "BASE: %u\n", base);
   fprintf(stderr, "V FLAG: %i\n", v_flag);
   fprintf(stderr, "C FLAG: %i\n", cust_bufsize);
-  fprintf(stderr, "bufsize: %li\n", bufsize);
+  fprintf(stderr, "bufsize: %u\n", (unsigned int)bufsize);
   fprintf(stderr, "F FLAG: %i\n", file_flag);
   fprintf(stderr, "FILE: \"%s\"\n", file);
   if (process_cols) {
@@ -66,7 +66,8 @@ int main(int   argc,
     print_version(argv);
 
   if (BUFFER_MIN_SIZE > bufsize) {
-    fprintf(stderr, "Minimum buffer column size is %li.\n", BUFFER_MIN_SIZE);
+    fprintf(stderr, "Minimum buffer column size is %u.\n",
+            (unsigned int)BUFFER_MIN_SIZE);
     exit(EXIT_FAILURE);
   }
 
@@ -123,8 +124,8 @@ int main(int   argc,
 
 #ifdef DBG_PRF
   fprintf(stderr, "========== ========== ==========\n");
-  fprintf(stderr, "ROWS in CSV : %li\n", csv_nrows);
-  fprintf(stderr, "COLS in CSV : %li\n", csv_ncols);
+  fprintf(stderr, "ROWS in CSV : %u\n", (unsigned int)csv_nrows);
+  fprintf(stderr, "COLS in CSV : %u\n", (unsigned int)csv_ncols);
   fprintf(stderr, "========== ========== ==========\n");
   fprintf(stderr, "Printing CSV file.\n");
   for (size_t i = 0; i < csv_nrows; i++) {
@@ -160,21 +161,22 @@ int main(int   argc,
 
   double *data = (double *)malloc(datasize * sizeof(double));
   if (data == NULL) {
-    fprintf(stderr, "Error allocating data : size: %li : %s\n", datasize,
-            strerror(errno));
+    fprintf(stderr, "Error allocating data : size: %u : %s\n",
+            (unsigned int)datasize, strerror(errno));
     exit(EXIT_FAILURE);
   }
   double *result = (double *)malloc(resultsize * sizeof(double));
   if (result == NULL) {
-    fprintf(stderr, "Error allocating result : size: %li : %s\n", resultsize,
-            strerror(errno));
+    fprintf(stderr, "Error allocating result : size: %u : %s\n",
+            (unsigned int)resultsize, strerror(errno));
     exit(EXIT_FAILURE);
   }
 
   if (process_cols) {
     for (size_t i = 0; i < csv_ncols; i++) {
       if (v_flag) {
-        fprintf(stdout, "Processing column %li / %li.\n", i + 1, csv_ncols);
+        fprintf(stdout, "Processing column %u / %u.\n", (unsigned int)(i + 1),
+                (unsigned int)csv_ncols);
       }
       for (size_t j = 0; j < csv_nrows; j++) {
         data[j] = CSV[j][i];
@@ -184,7 +186,8 @@ int main(int   argc,
   } else {
     for (size_t i = 0; i < csv_nrows; i++) {
       if (v_flag) {
-        fprintf(stdout, "Processing row %li / %li.\n", i + 1, csv_nrows);
+        fprintf(stdout, "Processing row %u / %u.\n", (unsigned int)(i + 1),
+                (unsigned int)csv_nrows);
       }
       for (size_t j = 0; j < csv_ncols; j++) {
         data[j] = CSV[i][j];
@@ -198,9 +201,11 @@ int main(int   argc,
   if (v_flag) {
     unsigned int power =
         (unsigned int)get_factor_power((int)datasize - 1, (int)base);
-    fprintf(stdout, "Base is %i, data size is %li.\n", base, datasize);
-    fprintf(stdout, "A factor of (%li - 1) is %i^%i.\n", datasize, base, power);
-    fprintf(stdout, "Expected accuracy is O(h^2*%i).\n", power);
+    fprintf(stdout, "Base is %u, data size is %u.\n", base,
+            (unsigned int)datasize);
+    fprintf(stdout, "A factor of (%u - 1) is %u^%u.\n", (unsigned int)datasize,
+            base, power);
+    fprintf(stdout, "Expected accuracy is O(h^2*%u).\n", power);
     fprintf(stdout, "Results:\n");
   }
 

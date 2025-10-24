@@ -27,8 +27,8 @@ void print_help(char  *argv[],
       "    The next arguments are useful for processing large CSV files.\n");
   fprintf(stdout,
           "    -c, BUFFER_SIZE        : a custom maximum column size for "
-          "reading CSV files. Must be > %li (the default value).\n",
-          buf_min_size);
+          "reading CSV files. Must be > %u (the default value).\n",
+          (unsigned int)buf_min_size);
   fprintf(stdout, "\n");
   fprintf(stdout, "When processing CSV files, we follow "
                   "https://www.rfc-editor.org/rfc/rfc4180.txt with:\n");

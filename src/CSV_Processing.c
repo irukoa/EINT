@@ -86,16 +86,16 @@ read_end:
 
   *CSV = (double **)malloc((*nrows) * sizeof(double *));
   if (*CSV == NULL) {
-    fprintf(stderr, "Error allocating CSV : nrows: %li : %s\n", *nrows,
-            strerror(errno));
+    fprintf(stderr, "Error allocating CSV : nrows: %u : %s\n",
+            (unsigned int)*nrows, strerror(errno));
     freeList(&string_list);
     exit(EXIT_FAILURE);
   }
   for (size_t i = 0; i < *nrows; i++) {
     (*CSV)[i] = (double *)malloc((*ncols) * sizeof(double));
     if ((*CSV)[i] == NULL) {
-      fprintf(stderr, "Error allocating CSV : ncols: %li : %s\n", *ncols,
-              strerror(errno));
+      fprintf(stderr, "Error allocating CSV : ncols: %u : %s\n",
+              (unsigned int)*ncols, strerror(errno));
       freeList(&string_list);
       exit(EXIT_FAILURE);
     }
@@ -126,7 +126,8 @@ read_end:
       ((*CSV)[i])[j] = strtod(numString, &check);
       if (strlen(check) != 0) {
         fprintf(stderr, "CSV input value not recognized:\n");
-        fprintf(stderr, "Row : %li | Col : %li\n", i + 1, j + 1);
+        fprintf(stderr, "Row : %u | Col : %u\n", (unsigned int)(i + 1),
+                (unsigned int)(j + 1));
         fprintf(stderr, "Value : %s\n", token);
         free(numString);
         free(copy_buffer);

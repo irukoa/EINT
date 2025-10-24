@@ -54,7 +54,7 @@ void Integrate_Random_Poly() {
   }
   datasize = datasize + 1;
 
-  fprintf(stderr, ">>>> SAMPLES = %li.\n", datasize);
+  fprintf(stderr, ">>>> SAMPLES = %u.\n", (unsigned int)datasize);
 
   const unsigned int min_order = 2;
   const unsigned int max_order = 20;
@@ -64,7 +64,7 @@ void Integrate_Random_Poly() {
   order =
       min_order + (unsigned int)lroundf((float)(max_order - min_order) * rnd);
 
-  fprintf(stderr, ">>>> POLYNIOMIAL ORDER = %i.\n", order);
+  fprintf(stderr, ">>>> POLYNIOMIAL ORDER = %u.\n", order);
 
   const double min_coef = (double)0.0;
   const double max_coef = (double)10.0;
