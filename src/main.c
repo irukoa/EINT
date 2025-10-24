@@ -4,7 +4,7 @@
 #include "Prime_Factors.h"
 
 #ifndef BUFFER_MIN_SIZE
-#define BUFFER_MIN_SIZE (size_t)1024
+#define BUFFER_MIN_SIZE (size_t)65536
 #endif
 
 int main(int   argc,
