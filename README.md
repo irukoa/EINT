@@ -24,6 +24,21 @@ Default installation in ``/usr/local``. Installs:
 sudo make uninstall PREFIX=/usr/local
 ```
 
+### Parallel build
+
+<details>
+<summary>Click me</summary>
+
+We provide a makefile for a OpenMP-parallelised build. The parallelisation target is the computation of the trapezoidal rule sums.
+
+To employ this option, use
+```
+cp profiles/parallel.make Makefile
+```
+and then follow the instructions for a regular installation.
+
+</details>
+
 ## Description
 
 EINT computes integrals of the form
@@ -38,7 +53,7 @@ $$
 x \to x_i = a + (b-a)\frac{i-1}{N-1} = a + (i-1)h : i\in[1, N],
 $$
 
-and that the array of values $\{f(x_i): i\in[1, N]\}$ is known. We call $N$ the number of discretisation points, and $h$ the "step size".
+and that the array of values $`\{f(x_i): i\in[1, N]\}`$ is known. We call $N$ the number of discretisation points, and $h$ the "step size". EINT returns the integral $I$ after entering the array of values $`\{f(x_i)\}`$.
 
 The accuracy of the method depends on $N$. Given a prime factorisation of $N-1$, $N-1 = 2^{n_2}3^{n_3}\cdots$, the extrapolation method can be applied with an arbitrary prime base $p$. If $p^{n_p}$ is a factor of $N-1$, then the expected accuracy of the result will be $\mathcal{O}(h^{2n_p})$.
 
