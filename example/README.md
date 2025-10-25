@@ -63,7 +63,7 @@ For example, the following computes $`I = (10-1)^{-1}\int_1^{10} dx\; x^2 = 37`$
 eint -t -b 3
 1 4 9 16 25 36 49 64 81 100
 ```
-It returns the exact result:
+returns the exact result:
 ```
 3.7000000000e+01
 ```
