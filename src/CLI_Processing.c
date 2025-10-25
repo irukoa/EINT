@@ -124,7 +124,7 @@ check_command_line_input(int           argc,
       break;
     case 'b':
       tmp = strtol(optarg, &check, 10);
-      if (*check != '\0' || !(is_prime((int)tmp))) {
+      if (*check != '\0' || !(is_prime((int)tmp)) || (int)tmp <= 1) {
         fprintf(stderr, "-b option requires a prime number > 1\n");
 #ifdef DBG_PRF
         status = EXIT_FAILURE;

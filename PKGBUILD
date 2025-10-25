@@ -4,7 +4,7 @@ _pkgfname=EINT
 pkgver=v1.0.0
 pkgrel=1
 pkgdesc="Numerically integrate data employing the extrapolation method."
-arch=('x86_64')
+arch=('x86_64' 'i686')
 url="https://github.com/irukoa/EINT.git#tag=$pkgver"
 license=('GPLv3')
 makedepends=('git' 'gcc-fortran')
