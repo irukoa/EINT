@@ -1,6 +1,6 @@
 #ifndef EINT_F_lib
 #define EINT_F_lib
-// clang-format off
+! // clang-format off
   interface
     function extrapolation_float(arr, sz, base) result(u) bind(c, name="extrapolation_float")
       use, intrinsic :: ISO_C_BINDING, only: C_SIZE_T, C_FLOAT, C_INT
@@ -22,5 +22,5 @@
       real(C_DOUBLE) :: u
     end function extrapolation_double
   end interface
-// clang-format on
+! // clang-format on
 #endif
