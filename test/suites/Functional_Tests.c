@@ -1,4 +1,4 @@
-#include "EINT.h"
+#include "EINT_C.h"
 
 void Integrate_Stiff() {
 

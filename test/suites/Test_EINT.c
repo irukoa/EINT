@@ -1,4 +1,4 @@
-#include "EINT.h"
+#include "EINT_C.h"
 
 void EINT_Test_check_float_trivial_case() {
 

@@ -1,4 +1,4 @@
-#include <EINT.h>
+#include <EINT_C.h>
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>

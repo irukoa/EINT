@@ -1,5 +1,5 @@
-#ifndef EINT_lib
-#define EINT_lib
+#ifndef EINT_C_lib
+#define EINT_C_lib
 
 #include <stdlib.h>
 

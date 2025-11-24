@@ -17,8 +17,9 @@ sudo make install PREFIX=/usr/local
 ```
 Default installation in ``/usr/local``. Installs:
 - ``eint``: executable program which processes CSV data to compute integrals numerically,
-- ``libeint.so``: shared library providing the functions ``extrapolation_float``, and ``extrapolation_double``; and
-- ``EINT.h``: header file for ``libeint.so``.
+- ``libeint.so``: shared library providing the functions ``extrapolation_float``, and ``extrapolation_double``;
+- ``EINT_C.h``: C header file for ``libeint.so``, and
+- ``EINT_F.h``: Fortran header file for ``libeint.so``.
 ### Uninstalling
 ```
 sudo make uninstall PREFIX=/usr/local

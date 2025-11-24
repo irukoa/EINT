@@ -39,7 +39,7 @@ OBJ := obj
 
 EXE := $(BIN)/eint
 LIB := $(BIN)/libeint.so
-HED := $(INCLUDE)/EINT.h
+HED := $(INCLUDE)/EINT_C.h $(INCLUDE)/EINT_F.h
 
 RELFLAGS := -Werror -O3 -DNDEBUG
 
@@ -85,40 +85,40 @@ TESTOBJS := $(filter-out $(DBGOBJ)/main.co,$(DBGOBJS))
 release: $(EXE) $(LIB)
 
 $(EXE): $(OBJS) | $(BIN)
-		$(FC) $(FLAGS) $(FFLAGS) $(CFLAGS) $(RELFLAGS) -I$(INCLUDE) $(DEFINITIOS) $(LDFLAGS) $(LDLIBS) $^ -o $@
+		$(FC) $(FLAGS) $(FFLAGS) $(CFLAGS) $(RELFLAGS) -I$(INCLUDE) $(DEFINITIOS) $^ -o $@ $(LDFLAGS) $(LDLIBS)
 		$(RM) *.mod
 
 $(LIB): $(FOBJS) | $(BIN)
-		$(FC) $(LIBFLAGS) $(FLAGS) $(FFLAGS) $(RELFLAGS) -I$(INCLUDE) $(DEFINITIOS) $(LDFLAGS) $(LDLIBS) $(FOBJS) -o $@
+		$(FC) $(LIBFLAGS) $(FLAGS) $(FFLAGS) $(RELFLAGS) -I$(INCLUDE) $(DEFINITIOS) $(FOBJS) -o $@ $(LDFLAGS) $(LDLIBS)
 
 $(OBJ)/%.co: $(SRC)/%.c | $(OBJ)
-		$(CC) $(FLAGS) $(CFLAGS) $(RELFLAGS) -I$(INCLUDE) $(DEFINITIOS) $(LDFLAGS) $(LDLIBS) -c $^ -o $@
+		$(CC) $(FLAGS) $(CFLAGS) $(RELFLAGS) -I$(INCLUDE) $(DEFINITIOS) -c $^ -o $@ $(LDFLAGS) $(LDLIBS)
 
 $(OBJ)/%.fo: $(SRC)/%.F90 | $(FMODS) $(OBJ)
-		$(FC) $(FLAGS) $(FFLAGS) $(RELFLAGS) -I$(INCLUDE) $(DEFINITIOS) $(LDFLAGS) $(LDLIBS) -c $^ -o $@
+		$(FC) $(FLAGS) $(FFLAGS) $(RELFLAGS) -I$(INCLUDE) $(DEFINITIOS) -c $^ -o $@ $(LDFLAGS) $(LDLIBS)
 
 $(OBJ)/%.mod: $(SRC)/%.F90 | $(OBJ)
-		$(FC) $(FLAGS) $(FFLAGS) $(RELFLAGS) -I$(INCLUDE) $(DEFINITIOS) $(LDFLAGS) $(LDLIBS) -fsyntax-only -J$(OBJ) $^
+		$(FC) $(FLAGS) $(FFLAGS) $(RELFLAGS) -I$(INCLUDE) $(DEFINITIOS) -fsyntax-only -J$(OBJ) $^ $(LDFLAGS) $(LDLIBS)
 
 -include $(DEPS)
 
 debug: $(DBGEXE) $(DBGLIB)
 
 $(DBGEXE): $(DBGOBJS) | $(DBGBIN)
-		$(FC) $(FLAGS) $(FFLAGS) $(CFLAGS) $(DBGFLAGS) -I$(INCLUDE) $(DEFINITIOS) $(LDFLAGS) $(LDLIBS) $^ -o $@
+		$(FC) $(FLAGS) $(FFLAGS) $(CFLAGS) $(DBGFLAGS) -I$(INCLUDE) $(DEFINITIOS) $^ -o $@ $(LDFLAGS) $(LDLIBS)
 		$(RM) *.mod *.gcno
 
 $(DBGLIB): $(DBGFOBJS) | $(DBGBIN)
-		$(FC) $(LIBFLAGS) $(FLAGS) $(FFLAGS) $(DBGFLAGS) -I$(INCLUDE) $(DEFINITIOS) $(LDFLAGS) $(LDLIBS) $(DBGFOBJS) -o $@
+		$(FC) $(LIBFLAGS) $(FLAGS) $(FFLAGS) $(DBGFLAGS) -I$(INCLUDE) $(DEFINITIOS) $(DBGFOBJS) -o $@ $(LDFLAGS) $(LDLIBS)
 
 $(DBGOBJ)/%.co: $(SRC)/%.c | $(DBGOBJ)
-		$(CC) $(FLAGS) $(CFLAGS) $(DBGFLAGS) -I$(INCLUDE) $(DEFINITIOS) $(LDFLAGS) $(LDLIBS) -c $^ -o $@
+		$(CC) $(FLAGS) $(CFLAGS) $(DBGFLAGS) -I$(INCLUDE) $(DEFINITIOS) -c $^ -o $@ $(LDFLAGS) $(LDLIBS)
 
 $(DBGOBJ)/%.fo: $(SRC)/%.F90 | $(DBGFMODS) $(DBGOBJ)
-		$(FC) $(FLAGS) $(FFLAGS) $(DBGFLAGS) -I$(INCLUDE) $(DEFINITIOS) $(LDFLAGS) $(LDLIBS) -c $^ -o $@
+		$(FC) $(FLAGS) $(FFLAGS) $(DBGFLAGS) -I$(INCLUDE) $(DEFINITIOS) -c $^ -o $@ $(LDFLAGS) $(LDLIBS)
 
 $(DBGOBJ)/%.mod: $(SRC)/%.F90 | $(DBGOBJ)
-		$(FC) $(FLAGS) $(FFLAGS) $(DBGFLAGS) -I$(INCLUDE) $(DEFINITIOS) $(LDFLAGS) $(LDLIBS) -fsyntax-only -J$(DBGOBJ) $^
+		$(FC) $(FLAGS) $(FFLAGS) $(DBGFLAGS) -I$(INCLUDE) $(DEFINITIOS) -fsyntax-only -J$(DBGOBJ) $^ $(LDFLAGS) $(LDLIBS)
 
 -include $(DBGDEPS)
 
@@ -140,7 +140,7 @@ clean:
 test: clean $(TESTEXE) runtest
 
 $(TESTEXE): $(TESTOBJS) $(TESTSRCS) $(TESTDIR)/Driver.c | $(DBGBIN)
-		$(FC) $(FLAGS) $(CFLAGS) $(DBGFLAGS) -I$(INCLUDE) -I$(TESTSRC) $(DEFINITIOS) $(LDFLAGS) $(LDLIBS) $(TESTOBJS) $(TESTDIR)/Driver.c -o $@
+		$(FC) $(FLAGS) $(CFLAGS) $(DBGFLAGS) -I$(INCLUDE) -I$(TESTSRC) $(DEFINITIOS) $(TESTOBJS) $(TESTDIR)/Driver.c -o $@ $(LDFLAGS) $(LDLIBS)
 		$(RM) *.mod
 
 runtest: $(TESTEXE)
@@ -174,5 +174,6 @@ install: release
 uninstall:
 		$(RM) $(DESTDIR)$(PREFIX)/bin/eint
 		$(RM) $(DESTDIR)$(PREFIX)/lib/libeint.so
-		$(RM) $(DESTDIR)$(PREFIX)/include/EINT.h
+		$(RM) $(DESTDIR)$(PREFIX)/include/EINT_C.h
+		$(RM) $(DESTDIR)$(PREFIX)/include/EINT_F.h
 		$(RM) $(DESTDIR)$(MNPATH)/man1/eint.1.gz

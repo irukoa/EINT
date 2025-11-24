@@ -49,7 +49,7 @@ Integrate f(x) = x from 0 to 1, using N = 5 = 2^2 - 1.
 
 .SH LIBRARY API
 
-Header: EINT.h,
+Header: C -> EINT_C.h, Fortran -> EINT_F.h,
 
 Library: libeint.so,
 
@@ -57,7 +57,7 @@ Link options: -leint.
 
 (float/double) *array : Pointer to the array containing the discretisation of f(x).
 
-size_t sz : Size of the array, that is N.
+size_t sz : Size of the array, that is, N.
 
 int base : Prime factor p of (N-1).
 

@@ -1,6 +1,6 @@
 #include "CLI_Processing.h"
 #include "CSV_Processing.h"
-#include "EINT.h"
+#include "EINT_C.h"
 #include "Prime_Factors.h"
 
 #ifndef BUFFER_MIN_SIZE
