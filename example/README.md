@@ -69,10 +69,10 @@ returns the exact result:
 ```
 </details>
 
-## API usage
+## C API usage
 <details>
 <summary>Click me</summary>
-The library includes the following functions:
+The C library includes the following functions:
 
 ```c
 float extrapolation_float(float *array,
@@ -87,6 +87,36 @@ A basic usage can be found in the file ``Example.c``. This program can be compil
 ```
 export LD_LIBRARY_PATH=/usr/local/lib
 gcc Example.c -o Run_Example -I/usr/local/include -leint -lm
+./Run_Example
+```
+</details>
+
+## Fortran API usage
+<details>
+<summary>Click me</summary>
+The Fortran library includes the following functions:
+
+```fortran
+function extrapolation_float(arr, sz, base) result(u)
+  integer(C_SIZE_T), intent(in) :: sz
+  real(C_FLOAT),     intent(in) :: arr(sz)
+  integer(C_INT),    intent(in) :: base
+
+  real(C_FLOAT) :: u
+end function extrapolation_float
+
+function extrapolation_double(arr, sz, base) result(u)
+  integer(C_SIZE_T), intent(in) :: sz
+  real(C_DOUBLE),    intent(in) :: arr(sz)
+  integer(C_INT),    intent(in) :: base
+
+  real(C_DOUBLE) :: u
+end function extrapolation_double
+```
+An example to solve improper integrals can be found in the file ``Example.F90``. This program can be compiled by running
+```
+export LD_LIBRARY_PATH=/usr/local/lib
+gfortran Example.F90 -o Run_Example -I/usr/local/include -leint
 ./Run_Example
 ```
 </details>
