@@ -47,6 +47,8 @@ contains
     u = 0_C_INT
     aux = number
 
+    if (prime_factor < 2) return
+
     do while (modulo(aux, prime_factor) == 0_C_INT)
       aux = aux/prime_factor
       u = u + 1_C_INT

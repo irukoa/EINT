@@ -51,6 +51,8 @@ contains
     u = 0_${ik}$
     aux = number
 
+    if (prime_factor < 2) return
+
     do while (modulo(aux, prime_factor) == 0_${ik}$)
       aux = aux / prime_factor
       u = u + 1_${ik}$
