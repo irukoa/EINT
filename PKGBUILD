@@ -1,7 +1,7 @@
 # Maintainer: Alvaro R. Puente-Uriona
 pkgname=eint
 _pkgfname=EINT
-pkgver=v1.0.1
+pkgver=v2.0.0
 pkgrel=1
 pkgdesc="Numerically integrate data employing the extrapolation method."
 arch=('x86_64' 'i686')
