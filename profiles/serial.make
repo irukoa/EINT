@@ -92,10 +92,10 @@ $(LIB): $(FOBJS) | $(BIN)
 		$(FC) $(LIBFLAGS) $(FLAGS) $(FFLAGS) $(RELFLAGS) -I$(INCLUDE) $(DEFINITIOS) $(FOBJS) -o $@ $(LDFLAGS) $(LDLIBS)
 
 $(OBJ)/%.co: $(SRC)/%.c | $(OBJ)
-		$(CC) $(FLAGS) $(CFLAGS) $(RELFLAGS) -I$(INCLUDE) $(DEFINITIOS) -c $^ -o $@ $(LDFLAGS) $(LDLIBS)
+		$(CC) $(FLAGS) $(CFLAGS) $(RELFLAGS) -I$(INCLUDE) $(DEFINITIOS) -c $< -o $@ $(LDFLAGS) $(LDLIBS)
 
 $(OBJ)/%.fo: $(SRC)/%.F90 | $(FMODS) $(OBJ)
-		$(FC) $(FLAGS) $(FFLAGS) $(RELFLAGS) -I$(INCLUDE) $(DEFINITIOS) -c $^ -o $@ $(LDFLAGS) $(LDLIBS)
+		$(FC) $(FLAGS) $(FFLAGS) $(RELFLAGS) -I$(INCLUDE) $(DEFINITIOS) -c $< -o $@ $(LDFLAGS) $(LDLIBS)
 
 $(OBJ)/%.mod: $(SRC)/%.F90 | $(OBJ)
 		$(FC) $(FLAGS) $(FFLAGS) $(RELFLAGS) -I$(INCLUDE) $(DEFINITIOS) -fsyntax-only -J$(OBJ) $^ $(LDFLAGS) $(LDLIBS)
@@ -112,10 +112,10 @@ $(DBGLIB): $(DBGFOBJS) | $(DBGBIN)
 		$(FC) $(LIBFLAGS) $(FLAGS) $(FFLAGS) $(DBGFLAGS) -I$(INCLUDE) $(DEFINITIOS) $(DBGFOBJS) -o $@ $(LDFLAGS) $(LDLIBS)
 
 $(DBGOBJ)/%.co: $(SRC)/%.c | $(DBGOBJ)
-		$(CC) $(FLAGS) $(CFLAGS) $(DBGFLAGS) -I$(INCLUDE) $(DEFINITIOS) -c $^ -o $@ $(LDFLAGS) $(LDLIBS)
+		$(CC) $(FLAGS) $(CFLAGS) $(DBGFLAGS) -I$(INCLUDE) $(DEFINITIOS) -c $< -o $@ $(LDFLAGS) $(LDLIBS)
 
 $(DBGOBJ)/%.fo: $(SRC)/%.F90 | $(DBGFMODS) $(DBGOBJ)
-		$(FC) $(FLAGS) $(FFLAGS) $(DBGFLAGS) -I$(INCLUDE) $(DEFINITIOS) -c $^ -o $@ $(LDFLAGS) $(LDLIBS)
+		$(FC) $(FLAGS) $(FFLAGS) $(DBGFLAGS) -I$(INCLUDE) $(DEFINITIOS) -c $< -o $@ $(LDFLAGS) $(LDLIBS)
 
 $(DBGOBJ)/%.mod: $(SRC)/%.F90 | $(DBGOBJ)
 		$(FC) $(FLAGS) $(FFLAGS) $(DBGFLAGS) -I$(INCLUDE) $(DEFINITIOS) -fsyntax-only -J$(DBGOBJ) $^ $(LDFLAGS) $(LDLIBS)
